@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'restaurants',
     'cloudinary',
-    'cloudinary_storage'
+    'cloudinary_storage',
+    'phonenumber_field'
 ]
 
 MIDDLEWARE = [
