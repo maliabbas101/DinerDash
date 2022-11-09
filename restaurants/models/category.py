@@ -6,3 +6,10 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+    @staticmethod
+    def get_all_categories():
+        return Category.objects.all()
+
+    # def get_specific_items(self):
+    #     return self.item_set.all()

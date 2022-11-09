@@ -9,6 +9,7 @@ psycopg2 = "*"
 django-cloudinary-storage = "*"
 pillow = "*"
 django-phonenumber-field = {extras = ["phonenumberslite"], version = "*"}
+django-environ = "*"
 
 [dev-packages]
 

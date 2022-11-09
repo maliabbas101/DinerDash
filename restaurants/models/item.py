@@ -19,3 +19,14 @@ class Item(models.Model):
 
     def __str__(self):
         return self.title
+
+    @staticmethod
+    def get_all_items():
+        return Item.objects.all()
+
+    @staticmethod
+    def get_items_by_category(category_id):
+        if (category_id):
+            return Item.objects.filter(categories=category_id)
+        else:
+            return Item.get_all_items()
