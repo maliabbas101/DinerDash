@@ -19,7 +19,3 @@ def index(request):
         'categories': categories
     }
     return render(request, 'index.html', context)
-
-
-def signup(request):
-    return render(request, 'signup.html')

@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'restaurants',
     'cloudinary',
     'cloudinary_storage',
-    'phonenumber_field'
+    'phonenumber_field',
+    'customers'
 ]
 
 MIDDLEWARE = [
