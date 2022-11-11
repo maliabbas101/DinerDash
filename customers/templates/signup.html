@@ -1,62 +1,12 @@
-{% extends 'base.html' %} {% block content %}
-
+{% extends 'base.html' %} {% load crispy_forms_filters %} {% load
+crispy_forms_tags %} {% block title %}
+<title>Signup</title>
+{% endblock title %} {% block content %}
 <div class="container">
   <div class="p-4 m-4">
     <div class="col-lg-5 mx-auto mt-5 border rounded pt-4 p-3">
-      <form action="" class="">
-        <div class="form-group mb-2">
-          <label for="email">Email</label>
-          <input
-            id=""
-            class="form-control form-control-sm"
-            type="email"
-            name="email"
-            placeholder="example@gmail.com"
-          />
-        </div>
-        <div class="form-group mb-2">
-          <label for="firstname">First Name</label>
-          <input
-            id=""
-            class="form-control form-control-sm"
-            type="text"
-            name="first_name"
-            placeholder=""
-          />
-        </div>
-
-        <div class="form-group mb-2">
-          <label for="lastname">Last Name</label>
-          <input
-            id=""
-            class="form-control form-control-sm"
-            type="text"
-            name="last_name"
-            placeholder=""
-          />
-        </div>
-
-        <div class="form-group mb-2">
-          <label for="contact">Contact</label>
-          <input
-            id=""
-            class="form-control form-control-sm"
-            type="text"
-            name="contact"
-            placeholder="+123456"
-          />
-        </div>
-
-        <div class="form-group mb-2">
-          <label for="password">Password</label>
-          <input
-            id=""
-            class="form-control form-control-sm"
-            type="password"
-            name="password"
-            placeholder="******"
-          />
-        </div>
+      <form action="/user/signup" class="" method="POST">
+        {% csrf_token %} {{ form|crispy }}
 
         <div class="form-group mt-2">
           <input

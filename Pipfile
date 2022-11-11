@@ -10,6 +10,7 @@ django-cloudinary-storage = "*"
 pillow = "*"
 django-phonenumber-field = {extras = ["phonenumberslite"], version = "*"}
 django-environ = "*"
+crispy-bootstrap5 = "*"
 
 [dev-packages]
 
