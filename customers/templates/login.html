@@ -1,19 +1,20 @@
 {% extends 'base.html' %} {% load crispy_forms_filters %} {% load
 crispy_forms_tags %} {% block title %}
-<title>Signup</title>
+<title>Login</title>
 {% endblock title %} {% block content %}
 <div class="container">
   <div class="p-4 m-4">
     <div class="col-lg-5 mx-auto mt-5 border rounded pt-4 p-3">
-      <h3 class="alert alert-heading border rounded">Create an account</h3>
-      <form action="/user/signup" class="" method="POST">
-        {% csrf_token %} {{ form|crispy }}
-
+      <h3 class="alert alert-heading border rounded">Login here</h3>
+      <form action="/user/login" class="" method="POST">
+        {% csrf_token %} {% if errors %}
+        <div class="alert alert-danger" role="alert">{{errors}}</div>
+        {% endif %} {{ form|crispy }}
         <div class="form-group mt-2">
           <input
             class="btn btn-sm btn-outline-success"
             type="submit"
-            value="Signup"
+            value="Login"
           />
         </div>
       </form>
