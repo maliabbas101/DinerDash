@@ -34,3 +34,10 @@ class Item(models.Model):
             return Item.objects.filter(categories=category_id)
         else:
             return Item.get_all_items()
+
+    @staticmethod
+    def get_items_by_restaurant(restaurant_id):
+        if (restaurant_id):
+            return Item.objects.filter(id=restaurant_id)
+        else:
+            return Item.get_all_items()

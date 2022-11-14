@@ -9,3 +9,11 @@ class Restaurant(models.Model):
 
     def __str__(self):
         return self.name
+
+    @staticmethod
+    def get_all_restaurants():
+        return Restaurant.objects.all()
+
+    @staticmethod
+    def get_restaurant_by_id(pid):
+        return Restaurant.objects.filter(id__e=pid)
