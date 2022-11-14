@@ -7,6 +7,16 @@ from django.views import View
 from .models.customer import Customer
 
 from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
+
+
+from django.contrib.auth import logout
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+    # Redirect to a success page.
 
 
 class Signup(View):
@@ -27,7 +37,7 @@ class Signup(View):
                                                 phone_number=phone_number, password=password)
         customer.register()
 
-        return redirect('index')
+        return redirect('login')
 
 
 class Login(View):
@@ -50,5 +60,5 @@ class Login(View):
 
         else:
             self.context['errors'] = 'Invalid email or password'
-            print(self.context)
+            # print(self.context)
             return render(request, 'login.html', self.context)

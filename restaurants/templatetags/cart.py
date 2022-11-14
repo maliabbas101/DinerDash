@@ -1,0 +1,35 @@
+from django import template
+
+register = template.Library()
+
+
+@register.filter(name='is_in_cart')
+def is_in_cart(item, cart):
+    if str(item.id) in cart:
+        return True
+    return False
+
+
+@register.filter(name='cart_count')
+def cart_count(item, cart):
+    if str(item.id) in cart:
+        return cart[str(item.id)]
+    return 0
+
+
+@register.filter(name='currency')
+def currency(number):
+    return str(number)+'$'
+
+
+@register.filter(name='item_total')
+def item_total(item, cart):
+    return item.price * cart_count(item, cart)
+
+
+@register.filter(name='total_amount')
+def total_amount(items, cart):
+    sum = 0
+    for item in items:
+        sum += item_total(item, cart)
+    return sum

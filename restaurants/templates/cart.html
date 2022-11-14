@@ -1,0 +1,51 @@
+{% extends 'base.html' %} {% block title %}
+<title>Cart</title>
+{% endblock title %} {% block content %} {% load cart %}
+
+<div class="container">
+  <div class="border rounded p-4 m-4">
+    <h1 class="display-4">Your Cart</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">S#No</th>
+          <th scope="col">Photo</th>
+          <th scope="col">Name</th>
+          <th scope="col">Price</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in items %}
+        <tr>
+          <td>{{ forloop.counter }}</td>
+          <td>
+            <img
+              src="{{item.photo.url}}"
+              alt=""
+              class="rounded-circle"
+              style="height: 50px"
+            />
+          </td>
+          <td>{{item.title}}</td>
+          <td>{{item.price|currency}}</td>
+          <td>{{item|cart_count:request.session.cart}}</td>
+          <td>{{item|item_total:request.session.cart|currency}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <th colspan="4"></th>
+          <th colspan="">Total</th>
+          <th>{{items|total_amount:request.session.cart|currency}}</th>
+        </tr>
+      </tfoot>
+    </table>
+    <div class="m-3 p-3">
+      <a href="" class="btn btn-outline-success col-lg-2 float-end">Checkout</a>
+    </div>
+  </div>
+</div>
+{% endblock content %}

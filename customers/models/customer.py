@@ -7,13 +7,13 @@ from django.core.validators import MinLengthValidator
 
 class Customer(AbstractUser):
     username = models.CharField(
-        _('Username'), max_length=32, blank=True, null=True, default='anonymoususer', unique=True)
+        _('Username'), max_length=32, blank=True, null=True, default='anonymoususer')
     email = models.EmailField(_('Email'), max_length=255, unique=True)
     phone_number = PhoneNumberField(blank=True)
     full_name = models.CharField(max_length=50, default='User')
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self):
         return self.full_name
