@@ -8,3 +8,5 @@ admin.site.register(models.Item)
 admin.site.register(models.Category)
 
 admin.site.register(models.Restaurant)
+
+admin.site.register(models.Order)
