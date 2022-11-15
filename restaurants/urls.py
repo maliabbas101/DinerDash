@@ -4,34 +4,46 @@ from django.contrib.auth.decorators import login_required
 
 from . import views
 urlpatterns = [
-    path('', views.index.Index.as_view(), name='index'),
-    path('cart', views.cart.Cart.as_view(), name='cart'),
+    path('', views.index_view.Index.as_view(), name='index'),
+    path('cart', views.cart_view.Cart.as_view(), name='cart'),
     path('checkout', login_required(
-        views.checkout.CheckoutView.as_view(), login_url='login'), name='checkout'),
-    path('orders', login_required(
-        views.order_view.OrderView.as_view(), login_url='login'), name='orders'),
+        views.checkout_view.CheckoutView.as_view(), login_url='login'), name='checkout'),
+    path('orders_user', login_required(
+        views.order_view.OrderView.as_view(), login_url='login'), name='orders_user'),
 
-    path('restaurants', views.restaurant.RestaurantListView.as_view(),
+    path('restaurants', views.restaurant_view.RestaurantListView.as_view(),
          name='restaurants'),
     path('restaurants/<int:pk>/detail',
-         views.restaurant.RestaurantDetailView.as_view(), name='restaurant_detail'),
-    path('restaurants/create/', views.restaurant.RestaurantCreateView.as_view(),
+         views.restaurant_view.RestaurantDetailView.as_view(), name='restaurant_detail'),
+    path('restaurants/create/', views.restaurant_view.RestaurantCreateView.as_view(),
          name='restaurant_create'),
     path('restaurants/<int:pk>/update/',
-         views.restaurant.RestaurantUpdateView.as_view(), name='restaurant_update'),
+         views.restaurant_view.RestaurantUpdateView.as_view(), name='restaurant_update'),
     path('restaurants/<int:pk>/delete/',
-         views.restaurant.RestaurantDeleteView.as_view(), name='restaurant_delete'),
+         views.restaurant_view.RestaurantDeleteView.as_view(), name='restaurant_delete'),
 
-    path('items', views.item.ItemListView.as_view(),
+    path('items', views.item_view.ItemListView.as_view(),
          name='items'),
     path('items/<int:pk>/detail',
-         views.item.ItemDetailView.as_view(), name='item_detail'),
-    path('items/create/', views.item.ItemCreateView.as_view(),
+         views.item_view.ItemDetailView.as_view(), name='item_detail'),
+    path('items/create/', views.item_view.ItemCreateView.as_view(),
          name='item_create'),
     path('items/<int:pk>/update/',
-         views.item.ItemUpdateView.as_view(), name='item_update'),
+         views.item_view.ItemUpdateView.as_view(), name='item_update'),
     path('items/<int:pk>/delete/',
-         views.item.ItemDeleteView.as_view(), name='item_delete'),
+         views.item_view.ItemDeleteView.as_view(), name='item_delete'),
+
+    path('orders', login_required(views.order_view.OrderListView.as_view(), login_url='login'),
+         name='orders_admin'),
+    path('orders/<int:pk>/detail',
+         login_required(views.order_view.OrderDetailView.as_view(), login_url='login'), name='order_detail'),
+
+    path('orders/create/', login_required(views.order_view.OrderCreateView.as_view(), login_url='login'),
+         name='order_create'),
+    path('orders/<int:pk>/update/',
+         login_required(views.order_view.OrderUpdateView.as_view(), login_url='login'), name='order_update'),
+    path('orders/<int:pk>/delete/',
+         login_required(views.order_view.OrderDeleteView.as_view(), login_url='login'), name='order_delete'),
 
 
     # path('restaurants', views.RestaurantView.as_view(), name='restaurants'),

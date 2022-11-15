@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load cart %}
+{% block content %}
+
+<div class="container mt-5" style="width: 70%;">
+    <div class="col">
+        <h1 class="text-center">Order Details</h1>
+        <div class="d-flex justify-content-center">
+            <table class="table table-striped mt-5" style="width: 100%">
+                <thead>
+                    <tr>
+                      <th class="text-center" scope="col">Items</th>
+                      <th class="text-center" scope="col">Customer</th>
+                      <th class="text-center" scope="col">Total Price</th>
+                      <th class="text-center" scope="col">Customer Address</th>
+                      <th class="text-center" scope="col">Customer Phone</th>
+                      <th class="text-center" scope="col">Date Ordered</th>
+                      <th class="text-center" scope="col">Order Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                      <td class="text-center">
+                        <a href="{% url 'order_detail' order.id %}">
+                        {% for item in order.items.all  %}
+                        <img src="{{item.photo.url}}" alt="" class="rounded-circle", style="height: 50px">
+                        {% endfor %}
+                      </a>
+                            </td>
+                        <td class="text-center">{{order.customer}}</td>
+                        <td class="ml-5 text-center">{{order.price}}</td>
+                        <td class="text-center">{{order.address}}</td>
+                        <td class="text-center"><b>{{order.phone}}</b></td>
+                        <td class="text-center"><b>{{order.date}}</b></td>
+                        <td class="text-center">{{order.get_status_display}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="d-flex justify-content-center">
+            <a href="{% url 'orders_admin' %}" class="d-block btn btn-primary btn-lg my-5">BACK</a>
+        </div>
+    </div>
+
+</div>
+
+{% endblock  %}

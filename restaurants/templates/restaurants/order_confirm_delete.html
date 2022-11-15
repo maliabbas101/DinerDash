@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% url 'orders' as list_all %}
+
+<div class="container d-flex justify-content-center mt-5" style="width: 50%;">
+    <div class="col mt-5 text-center">
+        <h1 class="mb-5">Delete Order</h1>
+
+        <p class="h5">Are you sure you want to delete this Order?</p>
+        <a href="{% url 'order_detail' order.id %}">
+          {% for item in order.items.all  %}
+          <img src="{{item.photo.url}}" alt="" class="rounded-circle", style="height: 50px">
+          {% endfor %}
+        </a>
+        <h3 class="my-5">{{ order.date }}</h3>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-primary btn-lg" value="Confirm" style="margin-right: 30px; margin-top: 30px;">
+            <input type="submit" class="btn btn-danger btn-lg" style="margin-top: 30px;" onclick="window.location='{{list_all}}'; return false;" value="Cancel">
+        </form>
+    </div>
+</div>
+
+{% endblock %}
