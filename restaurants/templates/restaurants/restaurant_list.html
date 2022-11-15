@@ -1,28 +1,4 @@
 {% extends 'base.html' %}
-{% comment %} {% extends 'base.html' %} {% block content %}
-
-<h1 class="text-center">All Restaurants</h1>
-<div class="container text-center mt-2">
-  <div id="restaurants" class="col-lg-12 text-center ">
-    <div class="row mx-auto">
-      {% for restaurant in object_list%}
-      <div class="card mx-auto mb-3" id="{{restaurant.id}}" style="width: 18rem">
-        <div class="card-body">
-          <a href="{% url 'restaurant_detail' restaurant.pk %}"><h5 class="card-title">{{restaurant.name}}</h5></a>
-          <p class="card-text">
-            {{restaurant.location}}
-          </p>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-  </div>
-</div>
-{% endblock content %} {% endcomment %}
-
-
-
-
 {% block content %}
 {% for restaurant in restaurant_list %}
     {% for colname in restaurant.column_set.all  %}
@@ -34,10 +10,10 @@
 <div class="container d-flex mt-5" style="width: 70%;">
     <div class="col">
         <h1 class="text-center">All Restaurants</h1>
-        <table class="table table-striped mt-5">
+        <table class="table table-striped mt-5 table-hover">
             <thead>
                 <tr>
-                    {% comment %} <th>#</th> {% endcomment %}
+                    <th class="text-center" scope="col">S#No</th>
                     <th class="text-center" scope="col">Name</th>
                     <th class="text-center" scope="col">Location</th>
                     <th></th>
@@ -49,7 +25,8 @@
                 {% for restaurant in restaurant_list %}
                 <tr>
                     {% comment %} <th scope="row">{{forloop.counter}}</th> {% endcomment %}
-                    <td class="ml-5"><a href="{% url 'restaurant_detail' restaurant.id %}">{{restaurant.name}}</a></td>
+                    <td class="text-center">{{forloop.counter}}</td>
+                    <td class="ml-5 text-center"><a href="{% url 'restaurant_detail' restaurant.id %}">{{restaurant.name}}</a></td>
                     <td class="text-center">{{restaurant.location}}</td>
                     <td><a href="{% url 'restaurant_update' restaurant.id %} ">Update</a></td>
                     <td><a href="{% url 'restaurant_delete' restaurant.id %}">Delete</a></td>

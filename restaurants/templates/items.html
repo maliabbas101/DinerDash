@@ -5,7 +5,7 @@
       <h1>Welcome, Admin</h1>
     {% endif %} {% for item in items %}
       <div class="card mx-auto mb-3" id="{{ item.id }}" style="width: 18rem">
-        <img src="{{ item.photo.url }}" class="card-img-top" alt="..." />
+        <a href="{% url 'item_detail' item.id %}"><img src="{{ item.photo.url }}" class="card-img-top" alt="" /></a>
         <div class="card-body">
           <h5 class="card-title">{{ item.name }}</h5>
           <p class="card-text">

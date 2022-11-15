@@ -20,9 +20,12 @@ def required_roles_for_cart(allowed_roles=[]):
 def required_roles(allowed_roles=[]):
     def decorator(func):
         def wrap(request, *args, **kwargs):
-            if request.user.groups.all()[0].name in allowed_roles:
-                return func(request, *args, **kwargs)
-            else:
+            if not request.user.is_authenticated:
                 raise PermissionDenied
+            else:
+                if request.user.groups.all()[0].name in allowed_roles:
+                    return func(request, *args, **kwargs)
+                else:
+                    raise PermissionDenied
         return wrap
     return decorator

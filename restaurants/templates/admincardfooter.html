@@ -1,18 +1,12 @@
 {% load cart %}
 
-<div class="row">
-  <form action="/#{{item.id}}" method="POST" class="col-2">
-    {% csrf_token %}
-    <input hidden type="text" name="item" value="{{item.id}}" />
-    <input hidden type="text" name="remove" value="True" />
-    <input type="submit" value="Delete" class="btn btn-outline-danger" />
-  </form>
-  <div class="text-center col">
-    <b></b>
+<div class="row text-center">
+  <div class="col-lg-6">
+   <a class="btn btn-outline-success" href="{% url 'item_update' item.id %} ">Update</a>
+
   </div>
-  <form action="/#{{item.id}}" method="POST" class="col-2">
-    {% csrf_token %}
-    <input hidden type="text" name="item" value="{{item.id}}" />
-    <input type="submit" value="Edit" class="btn btn-outline-success" />
-  </form>
+  <div class="col-lg-6">
+    <a class="btn btn-outline-danger" href="{% url 'item_delete' item.id %}">Delete</a>
+  </div>
+
 </div>

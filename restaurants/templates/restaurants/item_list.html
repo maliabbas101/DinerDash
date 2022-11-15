@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load cart %}
+{% block content %}
+{% for item in item_list %}
+    {% for colname in item.column_set.all  %}
+        <p>{{colname}}</p>
+    {% endfor %}
+{% endfor %}
+
+
+<div class="container d-flex mt-5" style="width: 70%;">
+    <div class="col">
+        <h1 class="text-center">All Items</h1>
+        <table class="table table-striped mt-5 table-hover">
+            <thead>
+                <tr>
+                    {% comment %} <th class="text-center" scope="col"><i class="fa fa-file-photo-o" aria-hidden="true"></i></th> {% endcomment %}
+                    <th class="text-center" scope="col">S#No</th>
+                    <th class="text-center" scope="col">Picture</th>
+                    <th class="text-center" scope="col">Name</th>
+                    <th class="text-center" scope="col">Description</th>
+                    <th class="text-center" scope="col">Price</th>
+                    <th class="text-center" scope="col">Restaurant</th>
+                    <th class="text-center" scope="col">Categories</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for item in item_list %}
+                <tr>
+                    <td class="text-center">{{forloop.counter}}</td>
+                    <td class="text-center"><img src="{{item.photo.url}}" alt="" class="rounded-circle"
+                        style="height: 50px"></td>
+                    <td class="ml-5 text-center"><a href="{% url 'item_detail' item.id %}">{{item.title}}</a></td>
+                    <td class="text-center">{{item.description}}</td>
+                    <td class="text-center"><b>{{item.price|currency}}</b></td>
+                    <td class="text-center">{{item.restaurant}}</td>
+                    <td class="text-center">
+                    {% for category in item.categories.all  %}
+                    {{category.name}}
+                    {% endfor %}
+                        </td>
+                    <td><a href="{% url 'item_update' item.id %} ">Update</a></td>
+                    <td><a href="{% url 'item_delete' item.id %}">Delete</a></td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-center">
+            <a href="{% url 'item_create' %}" class="d-block btn btn-primary btn-lg my-5">Add New</a>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}

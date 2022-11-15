@@ -24,13 +24,22 @@
           >
         </li>
 
+        <li class="nav-item">
+          <a
+            class="nav-link active"
+            aria-current="page"
+            href="{% url 'items' %}"
+            >Items</a
+          >
+        </li>
+
         {% if request.user.groups.all.first|is_admin %}
 
         <li class="nav-item">
           <a
             class="nav-link active"
             aria-current="page"
-            href="{% url 'restaurants' %}"
+            href="{% url 'restaurant_create'%}"
             >Add Restaurants</a
           >
         </li>
