@@ -22,6 +22,13 @@ def currency(number):
     return str(number)+'$'
 
 
+@register.filter(name='is_cart_empty')
+def is_cart_empty(cart):
+    if len(cart.keys()) == 0:
+        return True
+    return False
+
+
 @register.filter(name='item_total')
 def item_total(item, cart):
     return item.price * cart_count(item, cart)
@@ -33,3 +40,10 @@ def total_amount(items, cart):
     for item in items:
         sum += item_total(item, cart)
     return sum
+
+
+@register.filter('is_admin')
+def is_admin(string):
+    if str(string) == 'admin':
+        return True
+    return False

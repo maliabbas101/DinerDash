@@ -44,6 +44,17 @@
       </tfoot>
     </table>
     <div class="m-3 p-3">
+      {% if request.session.cart|is_cart_empty %}
+
+      <a
+        href=""
+        data-bs-toggle="modal"
+        data-bs-target="#checkoutModal"
+        class="btn btn-outline-success col-lg-2 float-end disabled"
+        >Checkout</a
+      >
+      {% else %}
+
       <a
         href=""
         data-bs-toggle="modal"
@@ -51,6 +62,7 @@
         class="btn btn-outline-success col-lg-2 float-end"
         >Checkout</a
       >
+      {% endif %}
     </div>
   </div>
 </div>

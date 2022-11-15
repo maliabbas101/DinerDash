@@ -4,7 +4,11 @@
 
 <div class="container">
   <div class="border rounded p-4 m-4">
+    {% if request.user.groups.all.first|is_admin %}
+    <h1 class="display-4">All Orders</h1>
+    {% else %}
     <h1 class="display-4">Your Orders</h1>
+    {% endif %}
     <table class="table">
       <thead>
         <tr>
@@ -12,10 +16,12 @@
           <th scope="col">Photo</th>
           <th scope="col">Date-Ordered</th>
           <th scope="col">Total Price</th>
+          <th scope="col">Status</th>
         </tr>
       </thead>
       <tbody>
         {% for order in orders %}
+
         <tr>
           <td><a href="">{{ forloop.counter }}</a></td>
           <td>
@@ -31,6 +37,7 @@
 
           <td>{{order.date}}</td>
           <td><b>{{order.price}}</b></td>
+          <td><b>{{order.get_status_display}}</b></td>
         </tr>
         {% endfor %}
       </tbody>

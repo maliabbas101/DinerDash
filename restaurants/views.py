@@ -27,6 +27,7 @@ class Index(View):
             items = Item.get_items_by_category(category_id)
         elif restaurant_id:
             items = Item.get_items_by_restaurant(restaurant_id)
+
         else:
             items = Item.get_all_items()
 
@@ -119,7 +120,11 @@ class CheckoutView(View):
 
 class OrderView(View):
     def get(self, request):
-        orders = Order.get_orders_by_customer(request.user.id)
+        if request.user.groups.all()[0] == 'user':
+            orders = Order.get_orders_by_customer(request.user.id)
+        else:
+            orders = Order.get_all_orders()
+
         context = {
             'orders': orders
         }

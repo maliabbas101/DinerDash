@@ -38,6 +38,6 @@ class Item(models.Model):
     @staticmethod
     def get_items_by_restaurant(restaurant_id):
         if (restaurant_id):
-            return Item.objects.filter(id=restaurant_id)
+            return Item.objects.filter(restaurant=restaurant_id)
         else:
             return Item.get_all_items()
