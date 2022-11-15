@@ -1,48 +1,27 @@
 {% load cart %}
 <div id="items" class="col-lg-8">
   <div class="row mx-auto">
-    {% for item in items%}
-    <div class="card mx-auto mb-3" id="{{item.id}}" style="width: 18rem">
-      <img src="{{item.photo.url}}" class="card-img-top" alt="..." />
-      <div class="card-body">
-        <h5 class="card-title">{{item.name}}</h5>
-        <p class="card-text">
-          {{item.description}}
-          <b>{{item.price|currency}}</b>
-        </p>
-        <p>{{item.restaurant.name}}</p>
-      </div>
-      <div class="card-footer p-0 row nu-gutters">
-        {% if item|is_in_cart:request.session.cart %}
-        <div class="row">
-          <form action="/#{{item.id}}" method="POST" class="col-2">
-            {% csrf_token %}
-            <input hidden type="text" name="item" value="{{item.id}}" />
-            <input hidden type="text" name="remove" value="True" />
-            <input type="submit" value="-" class="btn btn-outline-danger" />
-          </form>
-          <div class="text-center col">
-            <b>{{item|cart_count:request.session.cart}}</b> In Cart
-          </div>
-          <form action="/#{{item.id}}" method="POST" class="col-2">
-            {% csrf_token %}
-            <input hidden type="text" name="item" value="{{item.id}}" />
-            <input type="submit" value="+" class="btn btn-outline-success" />
-          </form>
+    {% if request.user.groups.first|is_admin %}
+      <h1>Welcome, Admin</h1>
+    {% endif %} {% for item in items %}
+      <div class="card mx-auto mb-3" id="{{ item.id }}" style="width: 18rem">
+        <img src="{{ item.photo.url }}" class="card-img-top" alt="..." />
+        <div class="card-body">
+          <h5 class="card-title">{{ item.name }}</h5>
+          <p class="card-text">
+            {{ item.description }}
+            <b>{{ item.price|currency }}</b>
+          </p>
+          <p>{{ item.restaurant.name }}</p>
         </div>
-        {% else %}
-        <form action="/#{{item.id}}" method="POST" class="btn-block">
-          {% csrf_token %}
-          <input hidden type="text" name="item" value="{{item.id}}" />
-          <input
-            type="submit"
-            class="float-right btn btn-outline-success form-control"
-            value="Add to Cart"
-          />
-        </form>
-        {% endif %}
+        <div class="card-footer p-0 row nu-gutters">
+          {% if request.user.groups.first|is_admin %}
+          {% include 'admincardfooter.html' %}
+          {% else %}
+            {% include 'cardfooter.html' %}
+          {% endif %}
+        </div>
       </div>
-    </div>
     {% endfor %}
   </div>
 </div>

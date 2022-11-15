@@ -38,6 +38,8 @@
       </ul>
 
       <ul class="navbar-nav d-flex">
+
+        {% if request.user.groups.first|is_admin is not True %}
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'cart' %}"
             >Cart
@@ -46,6 +48,7 @@
             >
           </a>
         </li>
+        {% endif %}
         {% if request.user.is_authenticated%}
         <li class="nav-item">
           <a

@@ -5,8 +5,11 @@ from restaurants.models.item import Item
 from restaurants.models.orders import Order
 from customers.models.customer import Customer
 from django.views import View
+from customers.decorators import required_roles_for_cart
+from django.utils.decorators import method_decorator
 
 
+@method_decorator(required_roles_for_cart(allowed_roles=['user']), name='dispatch')
 class CheckoutView(View):
     def post(self, request):
         address = request.POST.get('address')
