@@ -41,13 +41,17 @@ class Signup(View):
         phone_number = post_data.get('phone_number')
         password = post_data.get('password')
         confirm_password = post_data.get('confirm_password')
+        group = post_data.get('groups')
 
         email_check = self.check_user(email)
         password_check = self.check_password(password, confirm_password)
 
+
         if email_check and password_check:
             customer = Customer.objects.create_user(username=username, email=email, full_name=full_name,
                                                     phone_number=phone_number, password=password)
+            customer.register()
+            customer.groups.set(group)
             customer.register()
             messages.success(request, "Registration successfull.")
 
