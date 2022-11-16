@@ -1,1 +1,1 @@
-web gunicorn DinerDash.wsgi:apllication --log-file -
+web gunicorn DinerDash.wsgi:application --log-file -
