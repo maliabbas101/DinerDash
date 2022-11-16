@@ -54,3 +54,17 @@ class OrderUpdateView(OrderBaseView, UpdateView):
 @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
 class OrderDeleteView(OrderBaseView, DeleteView):
     """View to delete a Order"""
+
+class FilterOrderStatusView(View):
+    def get(self,request,status):
+
+
+        if status:
+            orders = Order.get_orders_by_status(status)
+        else:
+            orders = Order.get_all_orders()
+        context = {
+            'orders': orders
+        }
+        return render(request, 'order_status.html',context)
+

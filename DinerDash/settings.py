@@ -160,9 +160,6 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 AUTH_USER_MODEL = 'customers.Customer'
 
-STATIC_URL = '/static/'
-os.path.normpath
-STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, 'staticfiles'))
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+
 
 django_heroku.settings(locals())

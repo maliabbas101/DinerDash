@@ -1,16 +1,12 @@
 {% extends 'base.html' %}
 {% load cart %}
 {% block content %}
-{% for order in order_list %}
-    {% for colname in item.column_set.all  %}
-        <p>{{colname}}</p>
-    {% endfor %}
-{% endfor %}
+
 
 
 <div class="container d-flex mt-5" style="width: 70%;">
     <div class="col">
-        <h1 class="text-center">All Orders</h1>
+        <h1 class="text-center">Filtered Orders</h1>
         <table class="table table-striped mt-5 table-hover">
             <thead>
                 <tr>
@@ -29,7 +25,7 @@
             </thead>
             <tbody>
 
-                {% for order in order_list %}
+                {% for order in orders %}
                 <tr>
                     <td class="text-center">{{forloop.counter}}</td>
                     <td class="text-center">
@@ -52,9 +48,6 @@
 
             </tbody>
         </table>
-        <div class="d-flex justify-content-center">
-            <a href="{% url 'order_create' %}" class="d-block btn btn-primary btn-lg my-5">Add New</a>
-        </div>
     </div>
 
 </div>
