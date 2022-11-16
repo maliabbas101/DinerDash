@@ -18,12 +18,14 @@ class CheckoutView(View):
         customer = Customer.objects.get(id=request.user.id)
         cart = request.session.get('cart')
         items_list = Item.get_item_by_ids(list(cart.keys()))
+        items_quantity = list(cart.values())
+        print(items_quantity)
 
         order = Order(customer=customer, price=price,
                       address=address, phone=phone)
         order.placeOrder()
-        for item in items_list:
-            order.set_items(item=item.id)
+        for item, item_quantity in zip(items_list, items_quantity):
+            order.set_items(item.id, item_quantity)
 
         order.placeOrder()
         request.session['cart'] = {}

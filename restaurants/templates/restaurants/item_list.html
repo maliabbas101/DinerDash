@@ -21,6 +21,7 @@
                     <th class="text-center" scope="col">Description</th>
                     <th class="text-center" scope="col">Price</th>
                     <th class="text-center" scope="col">Restaurant</th>
+                    <th class="text-center" scope="col">Ordered Count</th>
                     <th class="text-center" scope="col">Categories</th>
                     <th></th>
                     <th></th>
@@ -37,6 +38,7 @@
                     <td class="text-center">{{item.description}}</td>
                     <td class="text-center"><b>{{item.price|currency}}</b></td>
                     <td class="text-center">{{item.restaurant}}</td>
+                    <td class="text-center">{{item.ordered_count}}</td>
                     <td class="text-center">
                     {% for category in item.categories.all  %}
                     {{category.name}}

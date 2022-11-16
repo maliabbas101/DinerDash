@@ -13,7 +13,7 @@ class Order(models.Model):
     STATUS_CHOICES = [
         (STATUS_ORDERED, "Ordered"),
         (STATUS_PAID, "Paid"),
-        (STATUS_COMPLETED, "Cancelled"),
+        (STATUS_CANCELLED, "Cancelled"),
         (STATUS_COMPLETED, "Completed"),
     ]
     items = models.ManyToManyField(Item)
@@ -28,7 +28,10 @@ class Order(models.Model):
     def placeOrder(self):
         self.save()
 
-    def set_items(self, item):
+    def set_items(self, item, item_quantity):
+        ordered_item = Item.objects.get(id=item)
+        item = Item.increase_order_count(ordered_item, item_quantity)
+        item.save()
         self.items.add(item)
 
     @staticmethod

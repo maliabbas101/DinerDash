@@ -16,9 +16,17 @@ class Item(models.Model):
     categories = models.ManyToManyField(Category)
     restaurant = models.ForeignKey(
         Restaurant, on_delete=models.CASCADE, default=1)
+    ordered_count = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['-ordered_count']
 
     def __str__(self):
         return self.title
+
+    def increase_order_count(self, number):
+        self.ordered_count += number
+        return self
 
     @staticmethod
     def get_all_items():

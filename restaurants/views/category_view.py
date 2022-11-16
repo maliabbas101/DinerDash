@@ -1,0 +1,17 @@
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
+from restaurants.models.category import Category
+from django.urls import reverse_lazy
+from django.views import View
+from customers.decorators import required_roles
+from django.utils.decorators import method_decorator
+
+
+class CategoryBaseView(View):
+    model = Category
+    fields = '__all__'
+    success_url = reverse_lazy('index')
+
+
+@method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
+class CategoryCreateView(CategoryBaseView, CreateView):
+    """View to create a new Category"""
