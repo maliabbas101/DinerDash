@@ -14,6 +14,9 @@ from pathlib import Path
 import cloudinary_storage
 import environ
 import os
+import django_heroku
+import dj_database_url
+
 env = environ.Env()
 environ.Env.read_env()
 
@@ -30,7 +33,7 @@ SECRET_KEY = 'django-insecure-a)ffa7s(zp$^jf7_3k+t(*i$ed&sxgn!+h0miv2(!i=15@%*25
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -156,3 +159,9 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 AUTH_USER_MODEL = 'customers.Customer'
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+
+django_heroku.settings(locals())

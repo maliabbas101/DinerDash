@@ -11,6 +11,8 @@ pillow = "*"
 django-phonenumber-field = {extras = ["phonenumberslite"], version = "*"}
 django-environ = "*"
 crispy-bootstrap5 = "*"
+gunicorn = "*"
+django-heroku = "*"
 
 [dev-packages]
 
