@@ -2,11 +2,17 @@
 crispy_forms_tags %} {% block title %}
 <title>Signup</title>
 {% endblock title %} {% block content %}
+
+{% comment %} {% for error in form.errors.values  %}
+  {{error}}
+{% endfor %} {% endcomment %}
+
 <div class="container">
   <div class="p-4 m-4">
     <div class="col-lg-5 mx-auto mt-5 border rounded pt-4 p-3">
       <h3 class="alert alert-heading border rounded">Create an account</h3>
       <form action="/user/signup" class="" method="POST">
+
         {% csrf_token %} {{ form|crispy }}
 
         <div class="form-group mt-2">

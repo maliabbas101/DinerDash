@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 
 
-from django.contrib.auth import logout
+from django.contrib import messages
 
 
 class Login(View):
@@ -29,14 +29,18 @@ class Login(View):
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
+            messages.success(request, "You have logged in successfully.")
             return redirect('index')
 
         else:
-            self.context['errors'] = 'Invalid email or password'
+            messages.error(request, "Invalid email or password.")
+
             # print(self.context)
-            return render(request, 'login.html', self.context)
+            return redirect('login')
 
 
 def logout_view(request):
     logout(request)
+    messages.success(request, "You have logged out successfully.")
+
     return redirect('login')

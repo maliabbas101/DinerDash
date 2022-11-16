@@ -4,24 +4,57 @@ from django.http import HttpResponse
 # Create your views here.
 from django.views import View
 from customers.models.customer import Customer
+from django.contrib import messages
 
 
 class Signup(View):
+    form = CustomerForm()
+
+    def check_user(self, form_email):
+
+        user = list(Customer.objects.filter(email=form_email))
+        if len(user) > 0:
+            self.form.errors.update(({'Email Integrity Error': "Email already exists."})
+                                    )
+            return False
+        return True
+
+    def check_password(self, password, confirm_password):
+        if password != confirm_password:
+            self.form.errors.update(({'Password Confirmation': "Passwords don't match."})
+                                    )
+            return False
+        return True
+
     def get(self, request):
         context = {
-            'form': CustomerForm()
+            'form': self.form
         }
         return render(request, 'signup.html', context)
 
     def post(self, request):
+
         post_data = request.POST
         username = post_data.get('username')
         email = post_data.get('email')
         full_name = post_data.get('full_name')
         phone_number = post_data.get('phone_number')
         password = post_data.get('password')
-        customer = Customer.objects.create_user(username=username, email=email, full_name=full_name,
-                                                phone_number=phone_number, password=password)
-        customer.register()
+        confirm_password = post_data.get('confirm_password')
 
-        return redirect('login')
+        email_check = self.check_user(email)
+        password_check = self.check_password(password, confirm_password)
+
+        if email_check and password_check:
+            customer = Customer.objects.create_user(username=username, email=email, full_name=full_name,
+                                                    phone_number=phone_number, password=password)
+            customer.register()
+            messages.success(request, "Registration successfull.")
+
+            return redirect('login')
+        else:
+            for error in self.form.errors.values():
+
+                messages.error(request, error)
+            self.form.errors.clear()
+            return redirect('signup')
