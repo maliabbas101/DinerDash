@@ -23,7 +23,7 @@
         {% for order in orders %}
 
         <tr>
-          <td><a href="">{{ forloop.counter }}</a></td>
+          <td><a href="{% url 'order_detail' order.id %}">{{ forloop.counter }}</a></td>
           <td>
             {% for item in order.items.all %}
             <img
