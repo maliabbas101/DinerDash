@@ -10,6 +10,7 @@ crispy_forms_tags %} {% block title %}
         {% csrf_token %} {% if errors %}
         <div class="alert alert-danger" role="alert">{{errors}}</div>
         {% endif %} {{ form|crispy }}
+        <p class="mt-2"><a href="{% url "password_reset" %}">Forgotten your password?</a></p>
         <div class="form-group mt-2">
           <input
             class="btn btn-sm btn-outline-success"
