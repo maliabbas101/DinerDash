@@ -3,6 +3,7 @@ from restaurants.models.item import Item
 from restaurants.models.category import Category
 from restaurants.models.restaurant import Restaurant
 from django.views import View
+from restaurants.utils import cart_quantity
 
 
 class Index(View):
@@ -36,22 +37,8 @@ class Index(View):
         cart = request.session.get('cart')
         remove = request.POST.get('remove')
 
-        if cart:
-            quantity = cart.get(item)
-            if quantity:
-                if remove:
-                    if quantity == 1:
-                        cart.pop(item)
-                    else:
-                        cart[item] = quantity-1
-                else:
-                    cart[item] = quantity+1
-            else:
-                cart[item] = 1
-        else:
-            cart = {}
-            cart[item] = 1
 
-        request.session['cart'] = cart
+
+        request.session['cart'] = cart_quantity(item,cart,remove)
 
         return redirect('index')

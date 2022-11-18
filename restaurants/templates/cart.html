@@ -30,7 +30,24 @@
           </td>
           <td>{{item.title}}</td>
           <td>{{item.price|currency}}</td>
-          <td>{{item|cart_count:request.session.cart}}</td>
+          <td>
+            <div class="row col-lg-4">
+              <form action="/cart" method="POST" class="col-2">
+                {% csrf_token %}
+                <input hidden type="text" name="item" value="{{item.id}}" />
+                <input hidden type="text" name="remove" value="True" />
+                <input type="submit" value="-" class="btn btn-sm btn-outline-danger" />
+              </form>
+              <div class="col-2 ms-3">
+                <b class="text-center">{{item|cart_count:request.session.cart}}</b>
+              </div>
+              <form action="/cart" method="POST" class="col-2">
+                {% csrf_token %}
+                <input hidden type="text" name="item" value="{{item.id}}" />
+                <input type="submit" value="+" class="btn btn-sm btn-outline-success" />
+              </form>
+            </div>
+          </td>
           <td>{{item|item_total:request.session.cart|currency}}</td>
         </tr>
         {% endfor %}
@@ -38,7 +55,7 @@
       <tfoot>
         <tr>
           <th colspan="4"></th>
-          <th colspan="">Total</th>
+          <th colspan="">Total Amount</th>
           <th>{{items|total_amount:request.session.cart|currency}}</th>
         </tr>
       </tfoot>
@@ -46,13 +63,6 @@
     <div class="m-3 p-3">
       {% if request.session.cart|is_cart_empty %}
 
-      <a
-        href=""
-        data-bs-toggle="modal"
-        data-bs-target="#checkoutModal"
-        class="btn btn-outline-success col-lg-2 float-end disabled"
-        >Checkout</a
-      >
       {% else %}
 
       <a
