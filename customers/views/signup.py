@@ -20,11 +20,16 @@ class Signup(View):
         return True
 
     def check_password(self, password, confirm_password):
-        if password != confirm_password:
-            self.form.errors.update(({'Password Confirmation': "Passwords don't match."})
-                                    )
-            return False
-        return True
+        if len(password)<6:
+             self.form.errors.update(({'Password Length': "Password is too short."})
+                                        )
+             return False
+        else:
+            if password != confirm_password:
+                self.form.errors.update(({'Password Confirmation': "Passwords don't match."})
+                                        )
+                return False
+            return True
 
     def get(self, request):
         context = {

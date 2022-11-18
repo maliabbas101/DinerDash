@@ -1,9 +1,14 @@
 from django import forms
 from .models.customer import Customer
+from django.utils.translation import gettext_lazy as _
+
 
 
 class CustomerForm(forms.ModelForm):
+    # password=forms.PasswordInput()
     password = forms.CharField(widget=forms.PasswordInput())
+    # password = forms.CharField(_('Password'), widget=forms.PasswordInput())
+
     confirm_password = forms.CharField(widget=forms.PasswordInput())
 
     class Meta:
