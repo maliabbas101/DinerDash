@@ -97,6 +97,14 @@
             >Logout</a
           >
         </li>
+        <li class="nav-item">
+          <a
+            class="nav-link disabled"
+            aria-current="page"
+            href="{% url 'logout' %}"
+            >{{request.user.email}}</a
+          >
+        </li>
 
 
         {% else %}

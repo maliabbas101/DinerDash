@@ -28,6 +28,7 @@ class RestaurantDetailView(RestaurantBaseView, DetailView):
 @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
 class RestaurantCreateView(RestaurantBaseView, CreateView):
     """View to create a new Restaurant"""
+    fields = ['name','location','contact']
 
 
 @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')

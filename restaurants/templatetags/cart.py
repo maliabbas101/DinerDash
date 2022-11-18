@@ -53,3 +53,9 @@ def is_admin(item):
     if item.retired == True:
         return True
     return False
+
+@register.filter('is_owner')
+def is_owner(restaurant,fullname):
+    if restaurant.owner.full_name == fullname:
+        return True
+    return False

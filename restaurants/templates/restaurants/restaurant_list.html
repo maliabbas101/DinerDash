@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load cart %}
 {% block content %}
 {% for restaurant in restaurant_list %}
     {% for colname in restaurant.column_set.all  %}
@@ -15,6 +16,7 @@
                 <tr>
                     <th class="text-center" scope="col">S#No</th>
                     <th class="text-center" scope="col">Name</th>
+                    <th class="text-center" scope="col">Owner</th>
                     <th class="text-center" scope="col">Location</th>
                     <th></th>
                     <th></th>
@@ -27,9 +29,17 @@
                     {% comment %} <th scope="row">{{forloop.counter}}</th> {% endcomment %}
                     <td class="text-center">{{forloop.counter}}</td>
                     <td class="ml-5 text-center"><a href="{% url 'restaurant_detail' restaurant.id %}">{{restaurant.name}}</a></td>
+                    <td class="text-center">{{restaurant.owner.full_name}}</td>
                     <td class="text-center">{{restaurant.location}}</td>
+
+                    {% if restaurant|is_owner:request.user.full_name%}
                     <td><a href="{% url 'restaurant_update' restaurant.id %} ">Update</a></td>
                     <td><a href="{% url 'restaurant_delete' restaurant.id %}">Delete</a></td>
+                    {% else %}
+                    <td></td>
+                    <td></td>
+                    {% endif %}
+
                 </tr>
             {% endfor %}
 

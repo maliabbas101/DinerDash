@@ -34,69 +34,75 @@
         {% if request.user.groups.first|is_admin %}
           <h1>Welcome, Admin</h1>
         {% endif %} {% for item in items %}
-          <div class="card mx-auto mb-3" id="{{ item.id }}" style="width: 18rem">
-            <a href="{% url 'item_detail' item.id %}"><img src="{{ item.photo.url }}" class="card-img-top" alt="" /></a>
-            <div class="card-body">
-              <h5 class="card-title">{{ item.name }}</h5>
-              <p class="card-text">
-                {{ item.description }}
-                <b>{{ item.price|currency }}</b>
-              </p>
-              <p>{{ item.restaurant.name }}</p>
-            </div>
-            <div class="card-footer p-0 row nu-gutters">
-              {% if request.user.groups.first|is_admin %}
-              <div class="row text-center">
-                <div class="col-lg-6">
-                 <a class="btn btn-outline-success" href="{% url 'item_update' item.id %} ">Update</a>
 
-                </div>
-                <div class="col-lg-6">
-                  <a class="btn btn-outline-danger" href="{% url 'item_delete' item.id %}">Delete</a>
-                </div>
-              </div>
-              {% else %}
+         {% if item.restaurant|is_owner:request.user.full_name %}
+         <div class="card mx-auto mb-3" id="{{ item.id }}" style="width: 18rem">
+           <a href="{% url 'item_detail' item.id %}"><img src="{{ item.photo.url }}" class="card-img-top" alt="" /></a>
+           <div class="card-body">
+             <h5 class="card-title">{{ item.name }}</h5>
+             <p class="card-text">
+               {{ item.description }}
+               <b>{{ item.price|currency }}</b>
+             </p>
+             <p>{{ item.restaurant.name }}</p>
+           </div>
+           <div class="card-footer p-0 row nu-gutters">
+             {% if request.user.groups.first|is_admin %}
+             <div class="row text-center">
+               <div class="col-lg-6">
+                <a class="btn btn-outline-success" href="{% url 'item_update' item.id %} ">Update</a>
 
-              {% if item|is_retired %}
+               </div>
+               <div class="col-lg-6">
+                 <a class="btn btn-outline-danger" href="{% url 'item_delete' item.id %}">Delete</a>
+               </div>
+             </div>
+             {% else %}
 
-              <div class="row">
-                <small class="text-center">Item is out of Stock.</small>
-              </div>
-              {% else %}
+             {% if item|is_retired %}
 
-              {% if item|is_in_cart:request.session.cart %}
-              <div class="row">
-                <form action="/#{{item.id}}" method="POST" class="col-2">
-                  {% csrf_token %}
-                  <input hidden type="text" name="item" value="{{item.id}}" />
-                  <input hidden type="text" name="remove" value="True" />
-                  <input type="submit" value="-" class="btn btn-outline-danger" />
-                </form>
-                <div class="text-center col">
-                  <b>{{item|cart_count:request.session.cart}}</b> In Cart
-                </div>
-                <form action="/#{{item.id}}" method="POST" class="col-2">
-                  {% csrf_token %}
-                  <input hidden type="text" name="item" value="{{item.id}}" />
-                  <input type="submit" value="+" class="btn btn-outline-success" />
-                </form>
-              </div>
-              {% else %}
-              <form action="/#{{item.id}}" method="POST" class="btn-block">
-                {% csrf_token %}
-                <input hidden type="text" name="item" value="{{item.id}}" />
-                <input
-                  type="submit"
-                  class="float-right btn btn-outline-success form-control"
-                  value="Add to Cart"
-                />
-              </form>
-              {% endif %}
-              {% endif %}
+             <div class="row">
+               <small class="text-center">Item is out of Stock.</small>
+             </div>
+             {% else %}
 
-              {% endif %}
-            </div>
-          </div>
+             {% if item|is_in_cart:request.session.cart %}
+             <div class="row">
+               <form action="/#{{item.id}}" method="POST" class="col-2">
+                 {% csrf_token %}
+                 <input hidden type="text" name="item" value="{{item.id}}" />
+                 <input hidden type="text" name="remove" value="True" />
+                 <input type="submit" value="-" class="btn btn-outline-danger" />
+               </form>
+               <div class="text-center col">
+                 <b>{{item|cart_count:request.session.cart}}</b> In Cart
+               </div>
+               <form action="/#{{item.id}}" method="POST" class="col-2">
+                 {% csrf_token %}
+                 <input hidden type="text" name="item" value="{{item.id}}" />
+                 <input type="submit" value="+" class="btn btn-outline-success" />
+               </form>
+             </div>
+             {% else %}
+             <form action="/#{{item.id}}" method="POST" class="btn-block">
+               {% csrf_token %}
+               <input hidden type="text" name="item" value="{{item.id}}" />
+               <input
+                 type="submit"
+                 class="float-right btn btn-outline-success form-control"
+                 value="Add to Cart"
+               />
+             </form>
+             {% endif %}
+             {% endif %}
+
+             {% endif %}
+           </div>
+         </div>
+         {% else %}
+         <div class="text-center mt-5"><b><h2>No items in your Restaurants</h2></b> </div>
+         {% endif %}
+
         {% endfor %}
       </div>
     </div>

@@ -4,11 +4,12 @@ from django.urls import reverse_lazy
 from django.views import View
 from customers.decorators import required_roles
 from django.utils.decorators import method_decorator
+from restaurants.models.restaurant import Restaurant
 
 
 class ItemBaseView(View):
     model = Item
-    fields = '__all__'
+    fields = ['title','description','price','photo','categories','retired']
     success_url = reverse_lazy('items')
 
 
@@ -28,6 +29,7 @@ class ItemDetailView(ItemBaseView, DetailView):
 @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
 class ItemCreateView(ItemBaseView, CreateView):
     """View to create a new Item"""
+    restaurants = Restaurant.objects.all()
 
 
 @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
