@@ -5,6 +5,7 @@ from django.views import View
 from customers.decorators import required_roles
 from django.utils.decorators import method_decorator
 from restaurants.models.restaurant import Restaurant
+from django.core.exceptions import PermissionDenied
 
 
 class ItemBaseView(View):
@@ -35,8 +36,18 @@ class ItemCreateView(ItemBaseView, CreateView):
 @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
 class ItemUpdateView(ItemBaseView, UpdateView):
     """View to update a Item"""
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if request.user.email != obj.restaurant.owner.email:
+            raise PermissionDenied
+        return super(ItemUpdateView, self).dispatch(request, *args, **kwargs)
 
 
 @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
 class ItemDeleteView(ItemBaseView, DeleteView):
     """View to delete a Item"""
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if request.user.email != obj.restaurant.owner.email:
+            raise PermissionDenied
+        return super(ItemDeleteView, self).dispatch(request, *args, **kwargs)
