@@ -48,8 +48,16 @@
                     {{category.name}}
                     {% endfor %}
                         </td>
-                    <td><a href="{% url 'item_update' item.id %} ">Update</a></td>
-                    <td><a href="{% url 'item_delete' item.id %}">Delete</a></td>
+
+                {% if request.user.groups.first|is_admin and item.restaurant|is_owner:request.user.full_name %}
+
+
+                <td><a href="{% url 'item_update' item.id %} ">Update</a></td>
+                <td><a href="{% url 'item_delete' item.id %}">Delete</a></td>
+                {% else %}
+                <td></td>
+                <td></td>
+                    {% endif %}
                 </tr>
                 {% else %}
                 <tr>
@@ -60,9 +68,11 @@
 
             </tbody>
         </table>
+        {% if request.user.groups.first|is_admin %}
         <div class="d-flex justify-content-center">
             <a href="{% url 'item_create' %}" class="d-block btn btn-primary btn-lg my-5">Add New</a>
         </div>
+        {% endif %}
     </div>
 
 </div>

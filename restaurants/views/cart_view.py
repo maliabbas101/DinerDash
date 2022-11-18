@@ -5,6 +5,8 @@ from django.views import View
 from customers.decorators import required_roles_for_cart
 from django.utils.decorators import method_decorator
 from restaurants.utils import cart_quantity
+from django.contrib import messages
+
 
 
 @method_decorator(required_roles_for_cart(allowed_roles=['user']), name='dispatch')
@@ -29,5 +31,8 @@ class Cart(View):
 
 
 
-
+        if remove:
+            messages.error(request, "Item removed from Cart.")
+        else:
+            messages.success(request,"Item added to Cart.")
         return redirect('cart')

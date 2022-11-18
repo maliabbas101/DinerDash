@@ -32,7 +32,7 @@
                     <td class="text-center">{{restaurant.owner.full_name}}</td>
                     <td class="text-center">{{restaurant.location}}</td>
 
-                    {% if restaurant|is_owner:request.user.full_name%}
+                    {% if restaurant|is_owner:request.user.full_name and request.user.groups.first|is_admin%}
                     <td><a href="{% url 'restaurant_update' restaurant.id %} ">Update</a></td>
                     <td><a href="{% url 'restaurant_delete' restaurant.id %}">Delete</a></td>
                     {% else %}
@@ -45,9 +45,14 @@
 
             </tbody>
         </table>
+
+        {% if request.user.groups.first|is_admin %}
+
         <div class="d-flex justify-content-center">
             <a href="{% url 'restaurant_create' %}" class="d-block btn btn-primary btn-lg my-5">Add New</a>
         </div>
+        {% endif %}
+
     </div>
 
 </div>

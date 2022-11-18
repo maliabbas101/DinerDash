@@ -7,7 +7,7 @@ from customers.models.customer import Customer
 from django.views import View
 from customers.decorators import required_roles_for_cart
 from django.utils.decorators import method_decorator
-
+from django.contrib import messages
 
 @method_decorator(required_roles_for_cart(allowed_roles=['user']), name='dispatch')
 class CheckoutView(View):
@@ -29,5 +29,6 @@ class CheckoutView(View):
 
         order.placeOrder()
         request.session['cart'] = {}
+        messages.success(request,"Order placed successfully.")
 
         return redirect('cart')

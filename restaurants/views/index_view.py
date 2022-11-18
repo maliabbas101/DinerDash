@@ -4,6 +4,7 @@ from restaurants.models.category import Category
 from restaurants.models.restaurant import Restaurant
 from django.views import View
 from restaurants.utils import cart_quantity
+from django.contrib import messages
 
 
 class Index(View):
@@ -40,5 +41,8 @@ class Index(View):
 
 
         request.session['cart'] = cart_quantity(item,cart,remove)
-
+        if remove:
+            messages.error(request, "Item removed from Cart.")
+        else:
+            messages.success(request,"Item added to Cart.")
         return redirect('index')

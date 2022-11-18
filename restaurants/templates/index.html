@@ -35,7 +35,8 @@
           <h1>Welcome, Admin</h1>
         {% endif %} {% for item in items %}
 
-         {% if item.restaurant|is_owner:request.user.full_name %}
+         {% if item.restaurant|is_owner:request.user.full_name or request.user.groups.first|is_user or request.user.is_anonymous%}
+
          <div class="card mx-auto mb-3" id="{{ item.id }}" style="width: 18rem">
            <a href="{% url 'item_detail' item.id %}"><img src="{{ item.photo.url }}" class="card-img-top" alt="" /></a>
            <div class="card-body">
@@ -47,6 +48,7 @@
              <p>{{ item.restaurant.name }}</p>
            </div>
            <div class="card-footer p-0 row nu-gutters">
+
              {% if request.user.groups.first|is_admin %}
              <div class="row text-center">
                <div class="col-lg-6">
@@ -102,7 +104,6 @@
          {% else %}
          <div class="text-center mt-5"><b><h2>No items in your Restaurants</h2></b> </div>
          {% endif %}
-
         {% endfor %}
       </div>
     </div>
