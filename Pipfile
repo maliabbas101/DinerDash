@@ -13,6 +13,7 @@ django-environ = "*"
 crispy-bootstrap5 = "*"
 gunicorn = "*"
 django-heroku = "*"
+django-picklefield = "*"
 
 [dev-packages]
 

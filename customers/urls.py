@@ -5,7 +5,7 @@ from .import views
 urlpatterns = [
     path('signup', views.signup.Signup.as_view(), name='signup'),
     path('login', views.authentication.Login.as_view(), name='login'),
-    path('logout', views.authentication.logout_view, name='logout'),
+    path('logout', views.authentication.Logout.as_view(), name='logout'),
 
 
     path('password_reset/',auth_views.PasswordResetView.as_view(),name='password_reset'),

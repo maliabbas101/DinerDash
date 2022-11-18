@@ -12,6 +12,11 @@ from django.contrib.auth import logout
 
 from django.contrib import messages
 
+from django.utils.decorators import method_decorator
+from customers.decorators import persist_session_vars
+
+
+@method_decorator(persist_session_vars(['carts']), name='dispatch')
 
 class Login(View):
     context = {
@@ -29,6 +34,13 @@ class Login(View):
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
+
+            # usersession = request.session.get('usersession')
+            # print(usersession)
+            # if not usersession:
+            #     print('here')
+            #     request.session['usersession'] = {'email': email,'cart':request.session.get('cart')}
+            #     print(request.session['usersession'])
             messages.success(request, "You have logged in successfully.")
             return redirect('index')
 
@@ -38,9 +50,10 @@ class Login(View):
             # print(self.context)
             return redirect('login')
 
+@method_decorator(persist_session_vars(['cart']), name='dispatch')
+class Logout(View):
+    def get(self,request):
+        logout(request)
+        messages.success(request, "You have logged out successfully.")
 
-def logout_view(request):
-    logout(request)
-    messages.success(request, "You have logged out successfully.")
-
-    return redirect('login')
+        return redirect('login')
