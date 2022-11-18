@@ -47,3 +47,9 @@ def is_admin(string):
     if str(string) == 'admin':
         return True
     return False
+
+@register.filter('is_retired')
+def is_admin(item):
+    if item.retired == True:
+        return True
+    return False

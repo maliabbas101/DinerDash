@@ -17,6 +17,7 @@ class Item(models.Model):
     restaurant = models.ForeignKey(
         Restaurant, on_delete=models.CASCADE, default=1)
     ordered_count = models.IntegerField(default=0)
+    retired = models.BooleanField(default = False)
 
     class Meta:
         ordering = ['-ordered_count']
