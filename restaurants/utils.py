@@ -16,3 +16,6 @@ def cart_quantity(item,cart,remove):
           cart[item] = 1
 
       return cart
+
+# def unique_restaurant(item,cart,remove):
+

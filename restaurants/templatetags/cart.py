@@ -1,5 +1,5 @@
 from django import template
-
+from restaurants.models.item import Item
 register = template.Library()
 
 
@@ -65,3 +65,8 @@ def is_owner(restaurant,fullname):
     if restaurant.owner.full_name == fullname:
         return True
     return False
+
+@register.filter('item_restaurant')
+def is_owner(keys):
+    return Item.get_item_by_id(list(keys)[0])[0].restaurant
+

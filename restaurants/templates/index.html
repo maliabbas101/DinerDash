@@ -57,18 +57,25 @@
                </div>
                <div class="col-lg-6">
                  <a class="btn btn-outline-danger" href="{% url 'item_delete' item.id %}">Delete</a>
-               </div>
-             </div>
-             {% else %}
+                </div>
+              </div>
+              {% else %}
 
-             {% if item|is_retired %}
+              {% if item|is_retired %}
 
-             <div class="row">
-               <small class="text-center">Item is out of Stock.</small>
-             </div>
-             {% else %}
+              <div class="row">
+                <small class="text-center">Item is out of Stock.</small>
+              </div>
+              {% else %}
+              {% if item|is_in_cart:request.session.cart %}
+              {{request.session.cart|length}}
 
-             {% if item|is_in_cart:request.session.cart %}
+              {% if request.session.cart|length > 0 %}
+                {{request.session.cart.keys|item_restaurant}}
+                {% else %}
+                nothing
+              {% endif %}
+
              <div class="row">
                <form action="/#{{item.id}}" method="POST" class="col-2">
                  {% csrf_token %}
@@ -94,6 +101,11 @@
                  class="float-right btn btn-outline-success form-control"
                  value="Add to Cart"
                />
+
+               {% if request.session.cart|length > 0 %}
+               <input hidden type="text" name="restaurant" value="{{request.session.cart.keys|item_restaurant}}">
+               {% endif %}
+
              </form>
              {% endif %}
              {% endif %}
@@ -101,8 +113,6 @@
              {% endif %}
            </div>
          </div>
-         {% else %}
-         {% comment %} <div class="text-center mt-5"><b><h2>No items in your Restaurants</h2></b> </div> {% endcomment %}
          {% endif %}
         {% endfor %}
       </div>

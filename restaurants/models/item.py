@@ -38,6 +38,10 @@ class Item(models.Model):
         return Item.objects.filter(id__in=ids)
 
     @staticmethod
+    def get_item_by_id(id):
+        return Item.objects.filter(id=id)
+
+    @staticmethod
     def get_items_by_category(category_id):
         if (category_id):
             return Item.objects.filter(categories=category_id)
