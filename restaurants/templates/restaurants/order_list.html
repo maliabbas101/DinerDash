@@ -28,9 +28,10 @@
                 </tr>
             </thead>
             <tbody>
-                {% comment %} if order is from restaurant of logged in admin {% endcomment %}
 
                 {% for order in order_list %}
+
+                {% if order.items.first.restaurant|is_owner:request.user.full_name %}
                 <tr>
                     <td class="text-center">{{forloop.counter}}</td>
                     <td class="text-center">
@@ -49,6 +50,7 @@
                     <td><a href="{% url 'order_update' order.id %} ">Update</a></td>
                     <td><a href="{% url 'order_delete' order.id %}">Delete</a></td>
                 </tr>
+                {% endif %}
             {% endfor %}
 
             </tbody>

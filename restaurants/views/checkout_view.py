@@ -8,6 +8,7 @@ from django.views import View
 from customers.decorators import required_roles_for_cart
 from django.utils.decorators import method_decorator
 from django.contrib import messages
+from restaurants.models.restaurant import Restaurant
 
 @method_decorator(required_roles_for_cart(allowed_roles=['user']), name='dispatch')
 class CheckoutView(View):
@@ -19,9 +20,10 @@ class CheckoutView(View):
         cart = request.session.get('cart')
         items_list = Item.get_item_by_ids(list(cart.keys()))
         items_quantity = list(cart.values())
-        print(items_quantity)
+        restaurant = request.POST.get('restaurant')
+        restaurant_ord = Restaurant.objects.filter(name=restaurant).first()
 
-        order = Order(customer=customer, price=price,
+        order = Order(customer=customer, price=price, restaurant=restaurant_ord,
                       address=address, phone=phone)
         order.placeOrder()
         for item, item_quantity in zip(items_list, items_quantity):

@@ -2,6 +2,7 @@ from django.db import models
 
 from .item import Item
 from customers.models.customer import Customer
+from restaurants.models.restaurant import Restaurant
 import datetime
 
 
@@ -19,6 +20,7 @@ class Order(models.Model):
     items = models.ManyToManyField(Item)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     price = models.CharField(max_length=30)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE,default=34)
     address = models.CharField(max_length=50, default='', blank=True)
     phone = models.CharField(max_length=50, default='', blank=True)
     date = models.DateField(default=datetime.datetime.today)

@@ -34,17 +34,15 @@ class Index(View):
 
     def post(self, request):
         item = request.POST.get('item')
+        item_ord = Item.get_item_by_id(item)
 
         cart = request.session.get('cart')
         remove = request.POST.get('remove')
         restaurant = request.POST.get('restaurant')
 
-        if restaurant:
-            item = Item.get_item_by_id(item)
-            if item[0].restaurant != restaurant:
-                messages.error(request,"You have item from other restaurant in your cart.")
-                return redirect('index')
-
+        if restaurant and item_ord[0].restaurant.name != restaurant:
+            messages.error(request,"You have item from other restaurant in your cart.")
+            return redirect('index')
         else:
             request.session['cart'] = cart_quantity(item,cart,remove)
             if remove:

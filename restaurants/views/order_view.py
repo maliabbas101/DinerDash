@@ -8,16 +8,17 @@ from django.views import View
 from customers.decorators import required_roles
 from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
+from django.core.exceptions import PermissionDenied
 
 
 class OrderView(View):
     def get(self, request):
-
         orders = Order.get_orders_by_customer(request.user.id)
 
         context = {
             'orders': orders
         }
+
         return render(request, 'orders.html', context)
 
 
@@ -36,8 +37,12 @@ class OrderDetailView(OrderBaseView, DetailView):
     """View to list the details from one Order.
     Use the 'Order' variable in the template to access
     the specific Order here and in the Views below"""
-    # model = Order
-    # template_name = 'Orders.html'
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if not(obj.restaurant in request.user.restaurant_set.all()):
+            raise PermissionDenied
+        return super(OrderDetailView, self).dispatch(request, *args, **kwargs)
+
 
 
 @method_decorator(required_roles(allowed_roles=['user']), name='dispatch')
@@ -49,11 +54,21 @@ class OrderCreateView(OrderBaseView, CreateView):
 class OrderUpdateView(OrderBaseView, UpdateView):
     """View to update a Order"""
     fields = ['status']
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if not(obj.restaurant in request.user.restaurant_set.all()):
+            raise PermissionDenied
+        return super(OrderUpdateView, self).dispatch(request, *args, **kwargs)
 
 
 @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
 class OrderDeleteView(OrderBaseView, DeleteView):
     """View to delete a Order"""
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if not(obj.restaurant in request.user.restaurant_set.all()):
+            raise PermissionDenied
+        return super(OrderDeleteView, self).dispatch(request, *args, **kwargs)
 
 class FilterOrderStatusView(View):
     def get(self,request,status):
