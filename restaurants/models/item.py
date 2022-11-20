@@ -15,7 +15,7 @@ class Item(models.Model):
 
     categories = models.ManyToManyField(Category)
     restaurant = models.ForeignKey(
-        Restaurant, on_delete=models.CASCADE, default=1)
+        Restaurant, on_delete=models.CASCADE)
     ordered_count = models.IntegerField(default=0)
     retired = models.BooleanField(default = False)
 

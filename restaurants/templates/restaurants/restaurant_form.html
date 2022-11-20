@@ -9,10 +9,19 @@
 
             {% csrf_token %}
             <table class="table">
-                <label>Owner*</label>
-                <input disabled type="text" name="owner" class="form-control" value="{{request.user.full_name}}" />
 
                 {{form|crispy}}
+
+
+                {% comment %} <select name="owner" class="select form-select" required="" id="id_owner">  <option value="3">Ali Abbas</option> <option value="2">Ali</option> <option value="1">User</option> {% endcomment %}
+
+                </select>
+                <label for="id_owner" class="form-label requiredField">
+                    Owner<span class="asteriskField">*</span> </label>
+                <select name="owner" class="select form-select" id="id_owner" name="owner">
+                        <option value="" selected="">---------</option>
+                        <option value="{{request.user.id}}" > {{request.user.full_name}}  </option>
+                 </select>
             </table>
             <div class="container d-flex justify-content-center" style="width: 10%;">
                 <input type="submit" class="btn btn-primary btn-lg" value="Submit" style="margin-right: 30px; margin-top: 30px;">

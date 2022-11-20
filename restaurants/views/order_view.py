@@ -40,7 +40,7 @@ class OrderDetailView(OrderBaseView, DetailView):
     # template_name = 'Orders.html'
 
 
-@method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
+@method_decorator(required_roles(allowed_roles=['user']), name='dispatch')
 class OrderCreateView(OrderBaseView, CreateView):
     """View to create a new Order"""
 

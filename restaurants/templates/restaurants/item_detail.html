@@ -36,7 +36,14 @@
         </div>
 
         <div class="d-flex justify-content-center">
+
+            {% if request.user.groups.first|is_admin %}
             <a href="{% url 'items' %}" class="d-block btn btn-primary btn-lg my-5">BACK</a>
+            {% else %}
+            <a href="{% url 'index' %}" class="d-block btn btn-primary btn-lg my-5">BACK</a>
+
+            {% endif %}
+
         </div>
     </div>
 

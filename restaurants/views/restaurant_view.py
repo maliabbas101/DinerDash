@@ -1,10 +1,12 @@
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from restaurants.models.restaurant import Restaurant
+from customers.models.customer import Customer
 from django.urls import reverse_lazy
 from django.views import View
 from customers.decorators import required_roles
 from django.utils.decorators import method_decorator
 from django.core.exceptions import PermissionDenied
+from django.shortcuts import render,redirect
 
 
 class RestaurantBaseView(View):
@@ -30,6 +32,16 @@ class RestaurantDetailView(RestaurantBaseView, DetailView):
 class RestaurantCreateView(RestaurantBaseView, CreateView):
     """View to create a new Restaurant"""
     fields = ['name','location','contact']
+    def post(self,request):
+        name = request.POST.get('name')
+        location = request.POST.get('location')
+        contact = request.POST.get('contact')
+        owner_id = request.POST.get('owner')
+
+        owner = Customer.objects.filter(id=owner_id)[0]
+        restaurant = Restaurant(name = name, location= location,contact=contact, owner=owner)
+        restaurant.save()
+        return redirect('restaurants')
 
 
 @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')

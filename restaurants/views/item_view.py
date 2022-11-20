@@ -6,11 +6,12 @@ from customers.decorators import required_roles
 from django.utils.decorators import method_decorator
 from restaurants.models.restaurant import Restaurant
 from django.core.exceptions import PermissionDenied
+from django.shortcuts import render,redirect
 
 
 class ItemBaseView(View):
     model = Item
-    fields = ['title','description','price','photo','categories','retired']
+    fields = ['title','description','price','categories','restaurant','photo','retired']
     success_url = reverse_lazy('items')
 
 
@@ -30,7 +31,8 @@ class ItemDetailView(ItemBaseView, DetailView):
 @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
 class ItemCreateView(ItemBaseView, CreateView):
     """View to create a new Item"""
-    restaurants = Restaurant.objects.all()
+
+
 
 
 @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')

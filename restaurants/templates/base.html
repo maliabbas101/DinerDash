@@ -1,3 +1,4 @@
+{% load cart %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -15,7 +16,12 @@
     />
   </head>
   <body>
+
+    {% if request.user.groups.first|is_admin %}
+    {% include 'admin_header.html' %}
+    {% else %}
     {% include 'header.html' %}
+    {% endif %}
     {% include 'alerts.html' %}
     {% block content %} {% endblock content%}
 
