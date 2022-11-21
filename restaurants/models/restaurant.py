@@ -4,7 +4,7 @@ from customers.models.customer import Customer
 
 
 class Restaurant(models.Model):
-    owner = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    owner = models.ForeignKey(Customer, on_delete=models.CASCADE,default=1)
     name = models.CharField(max_length=50)
     location = models.CharField(max_length=50)
     contact = PhoneNumberField()
