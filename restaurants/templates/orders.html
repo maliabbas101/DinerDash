@@ -12,18 +12,17 @@
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">S#No</th>
           <th scope="col">Photo</th>
           <th scope="col">Date-Ordered</th>
           <th scope="col">Total Price</th>
           <th scope="col">Status</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         {% for order in orders %}
 
         <tr>
-          <td><a href="{% url 'order_detail' order.id %}">{{ forloop.counter }}</a></td>
           <td>
             {% for item in order.items.all %}
             <img
@@ -38,6 +37,7 @@
           <td>{{order.date}}</td>
           <td><b>{{order.price}}</b></td>
           <td><b>{{order.get_status_display}}</b></td>
+          <td><a href="{% url 'order_delete' order.id %}">Delete</a></td>
         </tr>
         {% endfor %}
       </tbody>

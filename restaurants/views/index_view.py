@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from restaurants.models.item import Item
 from restaurants.models.category import Category
 from restaurants.models.restaurant import Restaurant
+from restaurants.models.orders import Order
+from customers.models.customer import Customer
+
 from django.views import View
 from restaurants.utils import cart_quantity
 from django.contrib import messages
@@ -45,6 +48,15 @@ class Index(View):
             return redirect('index')
         else:
             request.session['cart'] = cart_quantity(item,cart,remove)
+            # create an order if user is logged in
+            # if request.user.is_authenticated:
+            #     order = Order(customer=Customer.objects.get(id=request.user.id, price=''
+            #                                             ,restaurant=Restaurant.objects.filter(name=restaurant).first()))
+            #     order.save()
+            #     order.set_items(item.id,request.session['cart'].get(item))
+            #     order.save()
+            #     print(order)
+
             if remove:
                 messages.error(request, "Item removed from Cart.")
             else:

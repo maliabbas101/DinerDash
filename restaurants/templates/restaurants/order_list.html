@@ -21,6 +21,7 @@
                     <th class="text-center" scope="col">Customer Address</th>
                     <th class="text-center" scope="col">Customer Phone</th>
                     <th class="text-center" scope="col">Date Ordered</th>
+                    <th class="text-center" scope="col" colspan=2>Date-Time Updated</th>
                     <th class="text-center" scope="col">Order Status</th>
                     <th></th>
                     <th></th>
@@ -45,6 +46,7 @@
                     <td class="text-center">{{order.address}}</td>
                     <td class="text-center"><b>{{order.phone}}</b></td>
                     <td class="text-center"><b>{{order.date}}</b></td>
+                    <td class="text-center" colspan=2><b>{{order.datetime_updated}}</b></td>
                     <td class="text-center"><a href="{% url 'order_status' order.status %}">{{order.get_status_display}}</a></td>
 
                     <td>
@@ -109,7 +111,6 @@
                       </form>
                     {% endif %}
                 </td>
-                    <td><a href="{% url 'order_delete' order.id %}">Delete</a></td>
                 </tr>
                 {% endif %}
 
@@ -117,9 +118,6 @@
 
             </tbody>
         </table>
-        <div class="d-flex justify-content-center">
-            <a href="{% url 'order_create' %}" class="d-block btn btn-primary btn-lg my-5">Add New</a>
-        </div>
     </div>
 
 </div>

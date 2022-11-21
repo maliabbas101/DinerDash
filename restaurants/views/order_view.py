@@ -10,6 +10,7 @@ from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from django.core.exceptions import PermissionDenied
 from django.contrib import messages
+import datetime
 
 from restaurants.utils import *
 
@@ -68,12 +69,15 @@ class OrderUpdateView(OrderBaseView, UpdateView):
 
 
 
-@method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
+@method_decorator(required_roles(allowed_roles=['user']), name='dispatch')
 class OrderDeleteView(OrderBaseView, DeleteView):
+    success_url = reverse_lazy('orders_user')
     """View to delete a Order"""
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
-        if not(obj.restaurant in request.user.restaurant_set.all()):
+        print (type(obj.customer.email))
+        print(type(request.user.email))
+        if not(obj.customer.email == str(request.user.email)):
             raise PermissionDenied
         return super(OrderDeleteView, self).dispatch(request, *args, **kwargs)
 
@@ -100,13 +104,14 @@ class ChangeOrderStatusView(View):
         if cancel_id:
             orderobject = get_order(cancel_id)
             orderobject.status = "CN"
+
         elif pay_id:
             orderobject = get_order(pay_id)
             orderobject.status = "PI"
         else:
             orderobject = get_order(complete_id)
             orderobject.status = "CM"
-
+        orderobject.datetime_updated = datetime.datetime.now()
         orderobject.placeOrder()
         return redirect('orders_admin')
 

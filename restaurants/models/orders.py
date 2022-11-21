@@ -11,11 +11,15 @@ class Order(models.Model):
     STATUS_PAID = "PI"
     STATUS_CANCELLED = "CN"
     STATUS_COMPLETED = "CM"
+    STATUS_COMPLETED = "CM"
+    STATUS_PENDING = "PN"
+
     STATUS_CHOICES = [
         (STATUS_ORDERED, "Ordered"),
         (STATUS_PAID, "Paid"),
         (STATUS_CANCELLED, "Cancelled"),
         (STATUS_COMPLETED, "Completed"),
+        (STATUS_PENDING, "Pending"),
     ]
     items = models.ManyToManyField(Item)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
@@ -24,8 +28,9 @@ class Order(models.Model):
     address = models.CharField(max_length=50, default='', blank=True)
     phone = models.CharField(max_length=50, default='', blank=True)
     date = models.DateField(default=datetime.datetime.today)
+    datetime_updated = models.DateTimeField(null=True,blank = True)
     status = models.CharField(
-        max_length=2, choices=STATUS_CHOICES, default=STATUS_ORDERED)
+        max_length=2, choices=STATUS_CHOICES, default=STATUS_PENDING)
 
     def placeOrder(self):
         self.save()
