@@ -41,9 +41,13 @@ class Order(models.Model):
         return Order.objects.filter(customer=customer_id)
 
     @staticmethod
-    def get_orders_by_status(status):
-        return Order.objects.filter(status=status)
+    def get_orders_by_status(status,restaurants):
+        return Order.objects.filter(status=status, restaurant__in=restaurants)
 
     @staticmethod
     def get_all_orders():
         return Order.objects.all()
+
+    @staticmethod
+    def get_order_by_id(id):
+        return Order.objects.filter(id=id)

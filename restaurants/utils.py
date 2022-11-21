@@ -1,3 +1,4 @@
+from restaurants.models.orders import Order
 def cart_quantity(item,cart,remove):
       if cart:
         quantity = cart.get(item)
@@ -17,5 +18,8 @@ def cart_quantity(item,cart,remove):
 
       return cart
 
-# def unique_restaurant(item,cart,remove):
+def get_order(order_id):
+    order_op = Order.get_order_by_id(order_id)
+    orderobject = order_op [0]
+    return orderobject
 

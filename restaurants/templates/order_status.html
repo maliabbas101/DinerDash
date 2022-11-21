@@ -19,8 +19,8 @@
                     <th class="text-center" scope="col">Customer Phone</th>
                     <th class="text-center" scope="col">Date Ordered</th>
                     <th class="text-center" scope="col">Order Status</th>
-                    <th></th>
-                    <th></th>
+
+
                 </tr>
             </thead>
             <tbody>
@@ -40,14 +40,15 @@
                     <td class="text-center">{{order.address}}</td>
                     <td class="text-center"><b>{{order.phone}}</b></td>
                     <td class="text-center"><b>{{order.date}}</b></td>
-                    <td class="text-center"><a href="{% url 'order_status' order.status %}">{{order.get_status_display}}</a></td>
-                    <td><a href="{% url 'order_update' order.id %} ">Update</a></td>
-                    <td><a href="{% url 'order_delete' order.id %}">Delete</a></td>
+                    <td class="text-center">{{order.get_status_display}}</td>
                 </tr>
             {% endfor %}
 
             </tbody>
         </table>
+        <div class="d-flex justify-content-center">
+            <a href="{% url 'orders_admin' %}" class="d-block btn btn-dark btn-lg my-5">Go Back</a>
+        </div>
     </div>
 
 </div>

@@ -47,10 +47,73 @@
                     <td class="text-center"><b>{{order.phone}}</b></td>
                     <td class="text-center"><b>{{order.date}}</b></td>
                     <td class="text-center"><a href="{% url 'order_status' order.status %}">{{order.get_status_display}}</a></td>
-                    <td><a href="{% url 'order_update' order.id %} ">Update</a></td>
+
+                    <td>
+                    {% if order.status == "OD" %}
+                    <form action="/change_order_status" method="POST">
+                    {% csrf_token %}
+                        <input
+                          hidden
+                          id="pay"
+                          class="form-control"
+                          type="text"
+                          name="pay"
+                          value="{{order.id}}"
+                        />
+                    <input
+                        type="submit"
+                        value="Mark as Paid"
+                        class="btn btn-sm btn-outline-success col-lg-12 mt-3"
+                        />
+                      </form>
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if order.status == "PI" %}
+                   <form action="/change_order_status" method="POST">
+                        {% csrf_token %}
+                        <input
+                          hidden
+                          id="complete"
+                          class="form-control"
+                          type="text"
+                          name="complete"
+                          value="{{order.id}}"
+                        />
+                    <input
+                        type="submit"
+                        value="Mark as Completed"
+                        class="btn btn-sm btn-outline-success col-lg-12 mt-3"
+                        />
+                      </form>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if order.status == "OD" or  order.status == "PI"  %}
+
+                    <form action="/change_order_status" method="POST">
+                        {% csrf_token %}
+                        <input
+                          hidden
+                          id="cancel"
+                          class="form-control"
+                          type="text"
+                          name="cancel"
+                          value="{{order.id}}"
+                        />
+                    <input
+                        type="submit"
+                        value="Cancel"
+                        class="btn btn-sm btn-outline-danger col-lg-12 mt-3"
+                        />
+                      </form>
+                    {% endif %}
+                </td>
                     <td><a href="{% url 'order_delete' order.id %}">Delete</a></td>
                 </tr>
                 {% endif %}
+
             {% endfor %}
 
             </tbody>

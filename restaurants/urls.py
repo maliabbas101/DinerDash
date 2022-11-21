@@ -51,6 +51,9 @@ urlpatterns = [
      path('orders/<str:status>/filter/',
          login_required(views.order_view.FilterOrderStatusView.as_view(), login_url='login'), name='order_status'),
 
+     path('change_order_status', login_required(views.order_view.ChangeOrderStatusView.as_view(), login_url='login'),
+     name='change_order_status'),
+
     path('categories/create/', login_required(views.category_view.CategoryCreateView.as_view(), login_url='login'),
          name='category_create'),
 
