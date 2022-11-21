@@ -7,7 +7,7 @@ from customers.decorators import required_roles
 from django.utils.decorators import method_decorator
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render,redirect
-
+from django.contrib import messages
 
 class RestaurantBaseView(View):
     model = Restaurant
@@ -31,6 +31,15 @@ class RestaurantDetailView(RestaurantBaseView, DetailView):
 class RestaurantCreateView(RestaurantBaseView, CreateView):
     """View to create a new Restaurant"""
     fields = ['name','location','contact']
+
+    def check_restaurant(self, form_name):
+        restaurant_length = Restaurant.objects.filter(name=form_name).count()
+        if restaurant_length > 0:
+            # self.form.errors.update(({'Restaurant name Integrity Error': "Restaurant with same name already exists."})
+            #                         )
+            return False
+        return True
+
     def post(self,request):
         name = request.POST.get('name')
         location = request.POST.get('location')
@@ -38,9 +47,15 @@ class RestaurantCreateView(RestaurantBaseView, CreateView):
         owner_id = request.POST.get('owner')
 
         owner = Customer.objects.filter(id=owner_id)[0]
-        restaurant = Restaurant(name = name, location= location,contact=contact, owner=owner)
-        restaurant.save()
-        return redirect('restaurants')
+        if self.check_restaurant(name):
+            restaurant = Restaurant(name = name, location= location,contact=contact, owner=owner)
+            restaurant.save()
+            return redirect('restaurants')
+        else:
+            # for error in self.form.errors.values():
+            messages.error(request, "Restaurant with same name already exists.")
+
+            return redirect('restaurants')
 
 
 @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
