@@ -24,8 +24,7 @@ class RestaurantDetailView(RestaurantBaseView, DetailView):
     """View to list the details from one Restaurant.
     Use the 'Restaurant' variable in the template to access
     the specific Restaurant here and in the Views below"""
-    # model = Restaurant
-    # template_name = 'restaurants.html'
+
 
 
 @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')

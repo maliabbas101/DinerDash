@@ -26,7 +26,6 @@
 
                 {% for restaurant in restaurant_list %}
                 <tr>
-                    {% comment %} <th scope="row">{{forloop.counter}}</th> {% endcomment %}
                     <td class="text-center">{{forloop.counter}}</td>
                     <td class="ml-5 text-center"><a href="{% url 'restaurant_detail' restaurant.id %}">{{restaurant.name}}</a></td>
                     <td class="text-center">{{restaurant.owner.full_name}}</td>

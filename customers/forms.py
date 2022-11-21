@@ -5,9 +5,9 @@ from django.utils.translation import gettext_lazy as _
 
 
 class CustomerForm(forms.ModelForm):
-    # password=forms.PasswordInput()
+
     password = forms.CharField(widget=forms.PasswordInput())
-    # password = forms.CharField(_('Password'), widget=forms.PasswordInput())
+
 
     confirm_password = forms.CharField(widget=forms.PasswordInput())
 
@@ -15,7 +15,7 @@ class CustomerForm(forms.ModelForm):
         model = Customer
         fields = ["email", "username", "full_name",
                   "password", "confirm_password", "phone_number", "groups"]
-        # fields = '__all__'
+
 
 
 class CustomerLoginForm(forms.ModelForm):

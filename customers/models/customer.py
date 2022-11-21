@@ -10,7 +10,6 @@ class Customer(AbstractUser):
     email = models.EmailField(_('Email'), max_length=255, unique=True)
     phone_number = models.CharField(max_length=15, blank=True)
     full_name = models.CharField(max_length=50, default='User')
-    # password_confirmation = models.CharField(max_length=50)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']

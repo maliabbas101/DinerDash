@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-a)ffa7s(zp$^jf7_3k+t(*i$ed&sxgn!+h0miv2(!i=15@%*25'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -94,8 +94,8 @@ DATABASES = {
         'NAME': env('DATABASE_NAME'),
         'USER': env('DATABASE_USER'),
         'PASSWORD': env('DATABASE_PASS'),
-        'HOST': 'localhost',
-        'PORT': '5433',
+        'HOST': env('HOST'),
+        'PORT': env('PORT'),
     }
 }
 
@@ -144,9 +144,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # My Changes
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dllkbvnu7',
-    'API_KEY': '269392459365443',
-    'API_SECRET': 'O5A7PN8dVBf-D2n400Pbfm8g55o'
+    'CLOUD_NAME': env('CLOUD_NAME'),
+    'API_KEY': env('API_KEY'),
+    'API_SECRET': env('API_SECRET'),
 
 }
 
@@ -162,11 +162,11 @@ AUTH_USER_MODEL = 'customers.Customer'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST_USER = 'muhammad.ali.abbas@devsinc.com'
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
+EMAIL_PORT = env('EMAIL_PORT')
 EMAIL_USE_TLS = True
-EMAIL_HOST_PASSWORD = 'ipvkzrxvfxujcoku'
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 django_heroku.settings(locals())
 
 AUTH_PASSWORD_VALIDATORS = [

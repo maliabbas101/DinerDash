@@ -13,15 +13,9 @@ class Session(models.Model):
 
         ),
     )
-
     def save_session(self):
         self.save()
-
     def get_session_by_id(customer):
         return Session.objects.filter(customer=customer)
 
-
-
-    # def __str__(self):
-    #     return self.customer.id
 

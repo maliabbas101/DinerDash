@@ -11,9 +11,8 @@ class Signup(View):
     form = CustomerForm()
 
     def check_user(self, form_email):
-
-        user = list(Customer.objects.filter(email=form_email))
-        if len(user) > 0:
+        user_length = Customer.objects.filter(email=form_email).count()
+        if user_length > 0:
             self.form.errors.update(({'Email Integrity Error': "Email already exists."})
                                     )
             return False

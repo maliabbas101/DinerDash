@@ -56,7 +56,6 @@ class OrderCreateView(OrderBaseView, CreateView):
 class OrderUpdateView(OrderBaseView, UpdateView):
     """View to update a Order"""
     fields = ['status']
-    print(fields)
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
         if not(obj.restaurant in request.user.restaurant_set.all()):
@@ -64,7 +63,6 @@ class OrderUpdateView(OrderBaseView, UpdateView):
         if obj.status == "CM":
             messages.error(request,"Order is already completed can't change the status.")
             return redirect('orders_admin')
-            # return super(OrderUpdateView, self).dispatch(request, *args, **kwargs
         return super(OrderUpdateView, self).dispatch(request, *args, **kwargs)
 
 
@@ -112,10 +110,4 @@ class ChangeOrderStatusView(View):
         orderobject.placeOrder()
         return redirect('orders_admin')
 
-
-
-
-
-
-        # return render(request, 'order_status.html',context)
 
