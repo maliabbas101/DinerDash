@@ -18,6 +18,24 @@ crispy-bootstrap5 = "*"
 gunicorn = "*"
 django-heroku = "*"
 ```
+
+## Usage
+First clone or download this projecr from github link provided.
+Once you open this project first you have to create virtual environment.Then you can run the following commands.
+```bash
+pipenv install
+```
+Then you can run server through the following command.
+```bash
+./manage.py runserver
+```
+
+Before running the server just make sure to run.
+```bash
+./manage.py migrate
+```
+
+
 ## Deployment
 
 You can deploy the application on any online cloud platform just make sure to migrate the database through following command.

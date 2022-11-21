@@ -52,7 +52,6 @@ class RestaurantCreateView(RestaurantBaseView, CreateView):
             restaurant.save()
             return redirect('restaurants')
         else:
-            # for error in self.form.errors.values():
             messages.error(request, "Restaurant with same name already exists.")
 
             return redirect('restaurants')
