@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 
-from restaurants.models.orders import Order
+from restaurants.models.order import Order
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 
 from django.views import View
@@ -75,10 +75,11 @@ class OrderDeleteView(OrderBaseView, DeleteView):
     """View to delete a Order"""
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
-        print (type(obj.customer.email))
-        print(type(request.user.email))
+
         if not(obj.customer.email == str(request.user.email)):
             raise PermissionDenied
+        request.session['cart'] = {}
+
         return super(OrderDeleteView, self).dispatch(request, *args, **kwargs)
 
 @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')

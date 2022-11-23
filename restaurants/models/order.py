@@ -3,6 +3,7 @@ from django.db import models
 from .item import Item
 from customers.models.customer import Customer
 from restaurants.models.restaurant import Restaurant
+from restaurants.models.order_items import OrderItem
 import datetime
 
 
@@ -21,10 +22,10 @@ class Order(models.Model):
         (STATUS_COMPLETED, "Completed"),
         (STATUS_PENDING, "Pending"),
     ]
-    items = models.ManyToManyField(Item)
+    items = models.ManyToManyField(Item, through=OrderItem,related_name="orders" )
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     price = models.CharField(max_length=30)
-    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE,default=34)
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE,blank=True, null=True)
     address = models.CharField(max_length=50, default='', blank=True)
     phone = models.CharField(max_length=50, default='', blank=True)
     date = models.DateField(default=datetime.datetime.today)
@@ -46,6 +47,10 @@ class Order(models.Model):
         return Order.objects.filter(customer=customer_id)
 
     @staticmethod
+    def get_orders_by_customer_and_status(customer_id):
+        return Order.objects.filter(customer=customer_id,status="PN")
+
+    @staticmethod
     def get_orders_by_status(status,restaurants):
         return Order.objects.filter(status=status, restaurant__in=restaurants)
 
@@ -56,3 +61,7 @@ class Order(models.Model):
     @staticmethod
     def get_order_by_id(id):
         return Order.objects.filter(id=id)
+
+    @staticmethod
+    def get_pending_orders():
+        return Order.objects.filter(status="PN")

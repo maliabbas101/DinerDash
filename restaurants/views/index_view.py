@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect
 from restaurants.models.item import Item
 from restaurants.models.category import Category
 from restaurants.models.restaurant import Restaurant
-from restaurants.models.orders import Order
+from restaurants.models.order import Order
+from restaurants.models.order_items import OrderItem
 from customers.models.customer import Customer
 
 from django.views import View
-from restaurants.utils import cart_quantity
+from restaurants.utils import cart_quantity, creating_pending_orders
 from django.contrib import messages
 
 
@@ -37,28 +38,28 @@ class Index(View):
 
     def post(self, request):
         item = request.POST.get('item')
-        item_ord = Item.get_item_by_id(item)
+        item_ord = Item.get_item_by_id(item)[0]
 
         cart = request.session.get('cart')
         remove = request.POST.get('remove')
         restaurant = request.POST.get('restaurant')
 
-        if restaurant and item_ord[0].restaurant.name != restaurant:
-            messages.error(request,"You have item from other restaurant in your cart.")
+        if restaurant and item_ord.restaurant.name != restaurant:
+            messages.error(
+                request, "You have item from other restaurant in your cart.")
             return redirect('index')
         else:
-            request.session['cart'] = cart_quantity(item,cart,remove)
-            # create an order if user is logged in
-            # if request.user.is_authenticated:
-            #     order = Order(customer=Customer.objects.get(id=request.user.id, price=''
-            #                                             ,restaurant=Restaurant.objects.filter(name=restaurant).first()))
-            #     order.save()
-            #     order.set_items(item.id,request.session['cart'].get(item))
-            #     order.save()
-            #     print(order)
+            request.session['cart'] = cart_quantity(item, cart, remove)
+
+            if request.user.is_authenticated:
+                cart = request.session.get('cart')
+                customer = Customer.objects.filter(id=request.user.id)[0]
+
+                # creating_pending_
+                creating_pending_orders(cart, customer, remove, item_ord, item)
 
             if remove:
                 messages.error(request, "Item removed from Cart.")
             else:
-                messages.success(request,"Item added to Cart.")
+                messages.success(request, "Item added to Cart.")
             return redirect('index')

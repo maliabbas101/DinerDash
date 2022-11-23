@@ -48,11 +48,13 @@ def is_admin(string):
         return True
     return False
 
+
 @register.filter('is_user')
 def is_user(string):
     if str(string) == 'user':
         return True
     return False
+
 
 @register.filter('is_retired')
 def is_retired(item):
@@ -60,13 +62,22 @@ def is_retired(item):
         return True
     return False
 
+
 @register.filter('is_owner')
-def is_owner(restaurant,fullname):
+def is_owner(restaurant, fullname):
+
     if restaurant.owner.full_name == fullname:
         return True
     return False
+
 
 @register.filter('item_restaurant')
 def is_owner(keys):
     return Item.get_item_by_id(list(keys)[0])[0].restaurant
 
+
+@register.filter('is_not_pending')
+def is_not_pending(order):
+    if order.status == "PN":
+        return False
+    return True
