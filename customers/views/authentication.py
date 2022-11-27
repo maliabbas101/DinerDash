@@ -9,7 +9,6 @@ from restaurants.models.order_items import OrderItem
 from customers.models.customer import Customer
 from restaurants.models.restaurant import Restaurant
 from restaurants.models.item import Item
-from restaurants.utils import cart_quantity
 
 
 from django.contrib.auth import authenticate, login
@@ -18,11 +17,6 @@ from django.contrib.auth import logout
 
 from django.contrib import messages
 
-from django.utils.decorators import method_decorator
-from customers.decorators import persist_session_vars
-
-
-# @method_decorator(persist_session_vars(['carts']), name='dispatch')
 
 class Login(View):
     context = {
@@ -42,7 +36,6 @@ class Login(View):
             login(request, user)
             current_customer = Customer.objects.get(id=request.user.id)
 
-            # if cart is not None:
             if request.user.groups.all()[0].name != "admin":
 
                 order = Order.get_orders_by_customer_and_status(
@@ -93,8 +86,6 @@ class Login(View):
             messages.error(request, "Invalid email or password.")
 
             return redirect('login')
-
-# @method_decorator(persist_session_vars(['cart']), name='dispatch')
 
 
 class Logout(View):
