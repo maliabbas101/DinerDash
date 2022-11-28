@@ -16,6 +16,7 @@ django-heroku = "*"
 django-picklefield = "*"
 faker = "*"
 coverage = "*"
+factory-boy = "*"
 
 [dev-packages]
 autopep8 = "*"
