@@ -16,7 +16,6 @@ class CheckoutView(View):
     def post(self, request):
         address = request.POST.get('address')
         phone = request.POST.get('phone')
-        price = request.POST.get(('price'))
         order = Order.get_orders_by_customer_and_status(
             Customer.objects.get(id=request.user.id))
         if order.count() == 1:

@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 
 from restaurants.models.order import Order
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
@@ -13,6 +13,7 @@ from django.contrib import messages
 import datetime
 
 from restaurants.utils import *
+
 
 class OrderView(View):
     def get(self, request):
@@ -40,12 +41,12 @@ class OrderDetailView(OrderBaseView, DetailView):
     """View to list the details from one Order.
     Use the 'Order' variable in the template to access
     the specific Order here and in the Views below"""
+
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
-        if not(obj.restaurant in request.user.restaurant_set.all()):
+        if not (obj.restaurant in request.user.restaurant_set.all()):
             raise PermissionDenied
         return super(OrderDetailView, self).dispatch(request, *args, **kwargs)
-
 
 
 @method_decorator(required_roles(allowed_roles=['user']), name='dispatch')
@@ -57,47 +58,51 @@ class OrderCreateView(OrderBaseView, CreateView):
 class OrderUpdateView(OrderBaseView, UpdateView):
     """View to update a Order"""
     fields = ['status']
+
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
-        if not(obj.restaurant in request.user.restaurant_set.all()):
+        if not (obj.restaurant in request.user.restaurant_set.all()):
             raise PermissionDenied
         if obj.status == "CM":
-            messages.error(request,"Order is already completed can't change the status.")
+            messages.error(
+                request, "Order is already completed can't change the status.")
             return redirect('orders_admin')
         return super(OrderUpdateView, self).dispatch(request, *args, **kwargs)
-
-
 
 
 @method_decorator(required_roles(allowed_roles=['user']), name='dispatch')
 class OrderDeleteView(OrderBaseView, DeleteView):
     success_url = reverse_lazy('orders_user')
     """View to delete a Order"""
+
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
 
-        if not(obj.customer.email == str(request.user.email)):
+        if not (obj.customer.email == str(request.user.email)):
             raise PermissionDenied
         request.session['cart'] = {}
 
         return super(OrderDeleteView, self).dispatch(request, *args, **kwargs)
 
+
 @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
 class FilterOrderStatusView(View):
-    def get(self,request,status):
-
+    def get(self, request, status):
 
         if status:
-            orders = Order.get_orders_by_status(status,request.user.restaurant_set.all())
+            orders = Order.get_orders_by_status(
+                status, request.user.restaurant_set.all())
         else:
             orders = Order.get_all_orders()
         context = {
             'orders': orders
         }
-        return render(request, 'order_status.html',context)
+        return render(request, 'order_status.html', context)
+
+
 @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
 class ChangeOrderStatusView(View):
-    def post(self,request):
+    def post(self, request):
 
         cancel_id = request.POST.get('cancel')
         pay_id = request.POST.get('pay')
@@ -115,5 +120,3 @@ class ChangeOrderStatusView(View):
         orderobject.datetime_updated = datetime.datetime.now()
         orderobject.placeOrder()
         return redirect('orders_admin')
-
-

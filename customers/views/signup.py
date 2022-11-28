@@ -19,10 +19,10 @@ class Signup(View):
         return True
 
     def check_password(self, password, confirm_password):
-        if len(password)<6:
-             self.form.errors.update(({'Password Length': "Password is too short."})
-                                        )
-             return False
+        if len(password) < 6:
+            self.form.errors.update(({'Password Length': "Password is too short."})
+                                    )
+            return False
         else:
             if password != confirm_password:
                 self.form.errors.update(({'Password Confirmation': "Passwords don't match."})
@@ -49,7 +49,6 @@ class Signup(View):
 
         email_check = self.check_user(email)
         password_check = self.check_password(password, confirm_password)
-
 
         if email_check and password_check:
             customer = Customer.objects.create_user(username=username, email=email, full_name=full_name,
