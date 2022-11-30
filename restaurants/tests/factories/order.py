@@ -11,3 +11,5 @@ class OrderFactory(DjangoModelFactory):
     class Meta:
         model = Order
         django_get_or_create = ('restaurant',)
+
+    price = "0"

@@ -21,13 +21,36 @@ class TestAuthenticationViews(TestCase):
         self.group = GroupFactory.create()
 
         self.customer = CustomerFactory.create(groups=(self.group,))
-        # self.user = UserFactory.create(groups=(GroupFactory.create(),))
+
         self.category = category.CategoryFactory.create()
         self.restaurant = restaurant.RestaurantFactory.create(
             owner=self.customer)
         self.item = item.ItemFactory.create(restaurant=self.restaurant)
         self.item.categories.set((self.category,))
         self.item.save()
+
+    def login_user(self):
+        response = self.client.post(self.login_url, {
+            'email': self.customer.email,
+            'password': user_password
+        }, format='text/html')
+        self.client.login(email=self.customer.email,
+                          password=user_password)
+        return response
+
+    def logout_user(self):
+        self.client.get(self.logout_url)
+        self.client.logout()
+
+    def cart_set(self):
+        session = self.client.session
+        session["cart"] = {}
+        session["cart"].update({
+            str(self.item.id): '1',
+
+        })
+        session.save()
+        return session
 
     def test_customer_login_get(self):
         response = self.client.get(self.login_url)
@@ -53,19 +76,12 @@ class TestAuthenticationViews(TestCase):
 
     def test_customer_login_post_when_cart_is_empty(self):
 
-        response = self.client.post(self.login_url, {
-            'email': self.customer.email,
-            'password': user_password
-        }, format='text/html')
-        self.client.login(email=self.customer.email,
-                          password=user_password)
+        response = self.login_user()
         self.assertEqual(response.status_code, 302)
         self.assertTrue(self.customer.is_authenticated)
 
     def test_customer_login_post_when_cart_is_not_empty(self):
-        # response = self.client.post(self.index_url, {
-        #     item: self.item
-        # }, format='text/html')
+
         session = self.client.session
         session["cart"] = {}
         session["cart"].update({
@@ -73,22 +89,19 @@ class TestAuthenticationViews(TestCase):
 
         })
         session.save()
-        # if cart is not None:
-        #     items_list = Item.get_item_by_ids(list(cart.keys()))
-        # print(items_list)
-        response = self.client.post(self.login_url, {
-            'email': self.customer.email,
-            'password': user_password
-        }, format='text/html')
-        self.client.login(email=self.customer.email,
-                          password=user_password)
+
+        response = self.login_user()
         self.assertEqual(response.status_code, 302)
         self.assertTrue(self.customer.is_authenticated)
 
-    def test_customer_signup_get(self):
-        response = self.client.get(self.signup_url)
-        self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'signup.html')
+    def test_customer_login_when_pending_orders(self):
+
+        self.cart_set()
+        self.login_user()
+
+        self.logout_user()
+
+        self.login_user()
 
     def test_customer_signup_get(self):
         response = self.client.get(self.signup_url)
@@ -96,7 +109,6 @@ class TestAuthenticationViews(TestCase):
         self.assertTemplateUsed(response, 'signup.html')
 
     def test_signup_form(self):
-        # customer = CustomerFactory()
         data = {
             'username': "aynlee_91",
             'email': fake.email(),
@@ -108,22 +120,8 @@ class TestAuthenticationViews(TestCase):
         }
         self.common(data)
 
-    def common(self, data):
-
-        response = self.client.post(self.signup_url, data)
-        customer = CustomerFactory.create(
-            username=data['username'], email=data['email'], password=data['password'], phone_number=data['phone_number'])
-        customer.save()
-        customer.groups.set(data['groups'])
-        customer.save()
-        print(response)
-        self.assertEqual(response.status_code, 302)
-
-        customers = Customer.objects.all()
-        self.assertEqual(customers.count(), 2)
-
     def test_signup_form_with_errors(self):
-        # customer = CustomerFactory()
+
         data = {
             'username': "aynlee_91",
             'email': "example@gmail.com",
@@ -146,3 +144,16 @@ class TestAuthenticationViews(TestCase):
 
         self.common(data)
         self.common(data_second)
+
+    def common(self, data):
+
+        response = self.client.post(self.signup_url, data)
+        customer = CustomerFactory.create(
+            username=data['username'], email=data['email'], password=data['password'], phone_number=data['phone_number'])
+        customer.save()
+        customer.groups.set(data['groups'])
+        customer.save()
+        self.assertEqual(response.status_code, 302)
+
+        customers = Customer.objects.all()
+        self.assertEqual(customers.count(), 2)

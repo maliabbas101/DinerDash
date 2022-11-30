@@ -12,6 +12,7 @@ user_password = 'password'
 class GroupFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = auth_models.Group
+        django_get_or_create = ('name',)
 
     name = 'user'
 
