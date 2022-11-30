@@ -1,8 +1,13 @@
+from . import views
 from django.urls import path
 from django.contrib.auth.decorators import login_required
+from rest_framework.routers import DefaultRouter
+from .views.item_view import ItemViewSet
+from .views.restaurant_view import RestaurantViewSet
+router = DefaultRouter()
+router.register(r'item-view-set', ItemViewSet, basename="item")
+router.register(r'restaurant-view-set', RestaurantViewSet, basename="item")
 
-
-from . import views
 urlpatterns = [
     path('', views.index_view.Index.as_view(), name='index'),
     path('cart', views.cart_view.Cart.as_view(), name='cart'),
@@ -48,13 +53,14 @@ urlpatterns = [
     path('orders/create/', login_required(views.order_view.OrderCreateView.as_view(), login_url='login'),
          name='order_create'),
 
-     path('orders/<str:status>/filter/',
+    path('orders/<str:status>/filter/',
          login_required(views.order_view.FilterOrderStatusView.as_view(), login_url='login'), name='order_status'),
 
-     path('change_order_status', login_required(views.order_view.ChangeOrderStatusView.as_view(), login_url='login'),
-     name='change_order_status'),
+    path('change_order_status', login_required(views.order_view.ChangeOrderStatusView.as_view(), login_url='login'),
+         name='change_order_status'),
 
     path('categories/create/', login_required(views.category_view.CategoryCreateView.as_view(), login_url='login'),
          name='category_create'),
 
 ]
+urlpatterns += router.urls

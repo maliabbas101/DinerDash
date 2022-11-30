@@ -6,8 +6,16 @@ from django.views import View
 from customers.decorators import required_roles
 from django.utils.decorators import method_decorator
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from django.contrib import messages
+from rest_framework import viewsets
+from restaurants.serializers.restaurant_serializer import RestaurantSerializer
+
+
+class RestaurantViewSet(viewsets.ModelViewSet):
+    queryset = Restaurant.get_all_restaurants()
+    serializer_class = RestaurantSerializer
+
 
 class RestaurantBaseView(View):
     model = Restaurant
@@ -26,11 +34,10 @@ class RestaurantDetailView(RestaurantBaseView, DetailView):
     the specific Restaurant here and in the Views below"""
 
 
-
 @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
 class RestaurantCreateView(RestaurantBaseView, CreateView):
     """View to create a new Restaurant"""
-    fields = ['name','location','contact']
+    fields = ['name', 'location', 'contact']
 
     def check_restaurant(self, form_name):
         restaurant_length = Restaurant.objects.filter(name=form_name).count()
@@ -40,7 +47,7 @@ class RestaurantCreateView(RestaurantBaseView, CreateView):
             return False
         return True
 
-    def post(self,request):
+    def post(self, request):
         name = request.POST.get('name')
         location = request.POST.get('location')
         contact = request.POST.get('contact')
@@ -48,11 +55,13 @@ class RestaurantCreateView(RestaurantBaseView, CreateView):
 
         owner = Customer.objects.filter(id=owner_id)[0]
         if self.check_restaurant(name):
-            restaurant = Restaurant(name = name, location= location,contact=contact, owner=owner)
+            restaurant = Restaurant(
+                name=name, location=location, contact=contact, owner=owner)
             restaurant.save()
             return redirect('restaurants')
         else:
-            messages.error(request, "Restaurant with same name already exists.")
+            messages.error(
+                request, "Restaurant with same name already exists.")
 
             return redirect('restaurants')
 
@@ -71,6 +80,7 @@ class RestaurantUpdateView(RestaurantBaseView, UpdateView):
 @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
 class RestaurantDeleteView(RestaurantBaseView, DeleteView):
     """View to delete a Restaurant"""
+
     def dispatch(self, request, *args, **kwargs):
         obj = self.get_object()
         if request.user.email != obj.owner.email:

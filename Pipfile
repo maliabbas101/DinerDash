@@ -17,6 +17,7 @@ django-picklefield = "*"
 faker = "*"
 coverage = "*"
 factory-boy = "*"
+djangorestframework = "*"
 
 [dev-packages]
 autopep8 = "*"

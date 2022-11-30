@@ -4,11 +4,13 @@ from django.urls import reverse_lazy
 from django.views import View
 from customers.decorators import required_roles
 from django.utils.decorators import method_decorator
-from restaurants.models.restaurant import Restaurant
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import render,redirect
+from rest_framework import viewsets
+from restaurants.serializers.item_serializer import ItemSerializer
 
-
+class ItemViewSet(viewsets.ModelViewSet):
+  queryset = Item.get_all_items()
+  serializer_class = ItemSerializer
 class ItemBaseView(View):
     model = Item
     fields = ['title','description','price','categories','restaurant','photo','retired']
