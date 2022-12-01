@@ -4,6 +4,13 @@ from django.urls import reverse_lazy
 from django.views import View
 from customers.decorators import required_roles
 from django.utils.decorators import method_decorator
+from rest_framework import viewsets
+from restaurants.serializers.category_serializer import CategorySerializer
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.get_all_categories()
+    serializer_class = CategorySerializer
 
 
 class CategoryBaseView(View):

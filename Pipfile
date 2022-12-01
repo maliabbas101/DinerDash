@@ -18,6 +18,7 @@ faker = "*"
 coverage = "*"
 factory-boy = "*"
 djangorestframework = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 autopep8 = "*"

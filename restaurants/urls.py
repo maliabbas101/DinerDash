@@ -4,9 +4,14 @@ from django.contrib.auth.decorators import login_required
 from rest_framework.routers import DefaultRouter
 from .views.item_view import ItemViewSet
 from .views.restaurant_view import RestaurantViewSet
+from .views.category_view import CategoryViewSet
+from .views.order_view import OrderViewSet
 router = DefaultRouter()
 router.register(r'item-view-set', ItemViewSet, basename="item")
-router.register(r'restaurant-view-set', RestaurantViewSet, basename="item")
+router.register(r'restaurant-view-set',
+                RestaurantViewSet, basename="restaurant")
+router.register(r'category-view-set', CategoryViewSet, basename="category")
+router.register(r'order-view-set', OrderViewSet, basename="order")
 
 urlpatterns = [
     path('', views.index_view.Index.as_view(), name='index'),

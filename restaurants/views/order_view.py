@@ -13,6 +13,35 @@ from django.contrib import messages
 import datetime
 
 from restaurants.utils import *
+from rest_framework import viewsets
+from restaurants.serializers.order_serializer import OrderSerializer
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+
+
+# @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.get_all_orders()
+    serializer_class = OrderSerializer
+
+    # def common(self,request,pk):
+
+    @method_decorator(required_roles(allowed_roles=['user']), name='dispatch')
+    def create(self, request):
+        return super(OrderViewSet, self).create(request)
+
+    @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
+    def update(self, request, pk):
+        return super(OrderViewSet, self).update(request, pk)
+
+    @method_decorator(required_roles(allowed_roles=['admin']), name='dispatch')
+    def partial_update(self, request, pk):
+        return super(OrderViewSet, self).partial_update(request, pk)
+
+    @method_decorator(required_roles(allowed_roles=[]), name='dispatch')
+    def destroy(self, request, pk):
+        return super(OrderViewSet, self).destroy(request, pk)
 
 
 class OrderView(View):
