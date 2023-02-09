@@ -7,11 +7,11 @@ from .views.restaurant_view import RestaurantViewSet
 from .views.category_view import CategoryViewSet
 from .views.order_view import OrderViewSet
 router = DefaultRouter()
-router.register(r'item-view-set', ItemViewSet, basename="item")
-router.register(r'restaurant-view-set',
+router.register(r'api/items', ItemViewSet, basename="item")
+router.register(r'api/restaurants',
                 RestaurantViewSet, basename="restaurant")
-router.register(r'category-view-set', CategoryViewSet, basename="category")
-router.register(r'order-view-set', OrderViewSet, basename="order")
+router.register(r'api/categories', CategoryViewSet, basename="category")
+router.register(r'api/orders', OrderViewSet, basename="order")
 
 urlpatterns = [
     path('', views.index_view.Index.as_view(), name='index'),

@@ -12,6 +12,9 @@ class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.get_all_categories()
     serializer_class = CategorySerializer
 
+    def list(self, request, *args, **kwargs):
+        return super().list(request, *args, **kwargs)
+
 
 class CategoryBaseView(View):
     model = Category

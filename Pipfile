@@ -19,6 +19,9 @@ coverage = "*"
 factory-boy = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
+djangorestframework-simplejwt = "*"
+django-filter = "*"
+django-rest-knox = "*"
 
 [dev-packages]
 autopep8 = "*"
